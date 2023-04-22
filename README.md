@@ -9,8 +9,8 @@ A selfhosted(!) map which shows all captured handshakes and highlights those whi
 
 ## Workflow getting data
 There are two different ideas of data retrieval. 
-### Fully "automatic" but third-party-dependent way:
 
+### Fully "automatic" but third-party-dependent way:
 1. Autoupload caputured handshakes to onlinehashcrack with the pwnagotchi **[Plugin](https://github.com/evilsocket/pwnagotchi/blob/master/pwnagotchi/plugins/default/onlinehashcrack.py)**
 2. Get *auto-uploaded* handshakes and cracked passwords from onlinehashcrack. There is an API available, not sure if suitable for requesting **[API Docs](https://api.onlinehashcrack.com/)**
 3. Parse the mac-adress out of the API-request together with the BSSID, AP-Vendor, Date added and if found the cracked password.
