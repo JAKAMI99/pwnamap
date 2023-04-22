@@ -7,22 +7,22 @@ A selfhosted(!) map which shows all captured handshakes and highlights those whi
 
 ---
 
-## Workflow
-1. Autoupload caputured handshakes to onlinehashcrack **[Plugin](https://github.com/evilsocket/pwnagotchi/blob/master/pwnagotchi/plugins/default/onlinehashcrack.py)**
-    1. Upload pcap files to the server
-    2. Get *autouploaded* handshake and cracked passwords from 
-    onlinehashcrack **[API Docs](https://api.onlinehashcrack.com/)**
+## Workflow getting data
+There are two different ideas of data retrieval. 
+### Fully "automatic" but third-party-dependent way:
 
-2. Parser searches for new files every x minutes and parses the mac-adress
+1. Autoupload caputured handshakes to onlinehashcrack with the pwnagotchi **[Plugin](https://github.com/evilsocket/pwnagotchi/blob/master/pwnagotchi/plugins/default/onlinehashcrack.py)**
+2. Get *auto-uploaded* handshakes and cracked passwords from onlinehashcrack. There is an API available, not sure if suitable for requesting **[API Docs](https://api.onlinehashcrack.com/)**
+3. Parse the mac-adress out of the API-request together with the BSSID, AP-Vendor, Date added and if found the cracked password.
 
-3. Webserver requests geolocation on wigle with the parsed mac-adress **[API Docs](https://api.wigle.net/)**
+### Manual uploading
+1. Manually upload the handshakes to the webserver trough eg. sFTP(?)
+2. Parse the mac-adress and date captured out of the .pcap/.cap files. Could be automated with "folder change detection".
 
-4. If geolocation is found (is highly likely if war driving was enabled Pwnagotchi was running) parse it together with the following data on the map:
-    1. E-SSID
-    2. B-SSID
-    3. (?) Found password
-    4. Time captured
-    5. (?) maybe geocoded adress
+## Getting a geolocation trough mac-adresses
+
+1. Request geolocation on wigle with the parsed mac-adress. **[API Docs](https://api.wigle.net/)**
+2. If geolocation is found, which is highly likely if **[Wardriving](https://en.wikipedia.org/wiki/Wardriving)** was enabled while the Pwnagotchi was running, parse it together with the other data points.
     
 ## Question / WIP
 - Which Map is easy to host can be comfortable fed with geolocations and creating mappoints with data?
