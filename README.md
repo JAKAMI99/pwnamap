@@ -19,13 +19,19 @@ There are two different ideas of data retrieval.
 1. Manually upload the handshakes to the webserver trough eg. sFTP(?)
 2. Parse the mac-adress and date captured out of the .pcap/.cap files. Could be automated with "folder change detection".
 
+---
+
 ## Getting a geolocation trough mac-adresses
 
 1. Request geolocation on wigle with the parsed mac-adress. **[API Docs](https://api.wigle.net/)**
 2. If geolocation is found, which is highly likely if **[Wardriving](https://en.wikipedia.org/wiki/Wardriving)** was enabled while the Pwnagotchi was running, parse it together with the other data points.
+
+---
     
 ## Question / WIP
 - Which Map is easy to host can be comfortable fed with geolocations and creating mappoints with data?
 
+---
+
 ## Issues / Final Thoughts
-- onlinehashcrack's API is not optimized for requesting. For requests there is the need of a filename, because it's designed for API uploads. Maybe parsing the raw HTML is suitable? Should be easy since there is no need of authorization (Just E-Mail provided when uploading).
+- onlinehashcrack's API seems not to be optimized for requesting to me. For requests there is the need of a filename, because it's designed for API uploads. Maybe parsing the raw HTML is suitable? Should be easy since there is no need of authorization (Just E-Mail provided when uploading).
