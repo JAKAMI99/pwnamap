@@ -19,7 +19,7 @@ driver = webdriver.Chrome(options=chrome_options)
 # open url
 driver.get(url)
 
-# Wait until fully load (Highly WIP)
+# Wait until fully loaded (Highly WIP)
 time.sleep(5)
 
 # Search for the mail form an enter mail adress
@@ -32,7 +32,7 @@ email_input.send_keys(Keys.RETURN)
 # wait for successfull login
 time.sleep(5)
 
-# get the current PHPSESSID Cookie
+# save the current PHPSESSID Cookie
 cookies = driver.get_cookies()
 phpsessid_cookie = None
 
@@ -46,7 +46,7 @@ if phpsessid_cookie:
 else:
     print("PHPSESSID-Cookie wurde nicht gefunden.")
 
-# Kill browser instgance
+# Kill browser instance
 driver.quit()
 
 # function to export the csv which holds all hashes
@@ -62,10 +62,10 @@ def download_csv(phpsessid_cookie):
     with open(output_file, "wb") as f:
         f.write(response.content)
 
-    print(f"CSV-Datei wurde erfolgreich als {output_file} gespeichert.")
+    print(f"CSV-Datei was created as {output_file} .")
 
 # if cookie is present, call the download_csv function
 if phpsessid_cookie:
     download_csv(phpsessid_cookie)
 else:
-    print("PHPSESSID-Cookie wurde nicht gefunden.")
+    print("PHPSESSID-Cookie was not found.")
