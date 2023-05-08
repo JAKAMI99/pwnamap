@@ -6,37 +6,33 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
-# Installieren Sie die erforderlichen Abhängigkeiten
-subprocess.run(["pip", "install", "selenium"])
-subprocess.run(["pip", "install", "requests"])
-
 url = "https://www.onlinehashcrack.com/dashboard"
 email = "example@email.com"
 
-# Konfigurieren Sie den Chrome WebDriver, um headless ausgeführt zu werden
+# configure Chrome WebDriver, to run in headless mode
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
-# Erstellen Sie eine Instanz des Browsers (Chrome in diesem Beispiel) mit den headless-Optionen
+# Run instance of headless chrome
 driver = webdriver.Chrome(options=chrome_options)
 
-# Öffnen Sie die URL im Browser
+# open url
 driver.get(url)
 
-# Warten Sie, bis die Seite vollständig geladen ist
+# Wait until fully load (Highly WIP)
 time.sleep(5)
 
-# Suchen Sie das E-Mail-Eingabefeld und geben Sie die E-Mail-Adresse ein
+# Search for the mail form an enter mail adress
 email_input = driver.find_element(By.NAME, "emailTasks")
 email_input.send_keys(email)
 
-# Senden Sie das Formular, indem Sie Enter drücken
+# Press enter to sent the requests
 email_input.send_keys(Keys.RETURN)
 
-# Warten Sie, bis die Anmeldung abgeschlossen ist
+# wait for successfull login
 time.sleep(5)
 
-# Holen Sie sich den PHPSESSID-Cookie
+# get the current PHPSESSID Cookie
 cookies = driver.get_cookies()
 phpsessid_cookie = None
 
@@ -50,25 +46,25 @@ if phpsessid_cookie:
 else:
     print("PHPSESSID-Cookie wurde nicht gefunden.")
 
-# Schließen Sie den Browser
+# Kill browser instgance
 driver.quit()
 
-# Funktion zum Herunterladen der CSV-Datei
+# function to export the csv which holds all hashes
 def download_csv(phpsessid_cookie):
     csv_url = "https://www.onlinehashcrack.com/wpa-exportcsv"
     output_file = "output.csv"
 
-    # Setzen Sie den PHPSESSID-Cookie für die Anfrage
+    # setup PHPSESSID cookie
     cookies = {"PHPSESSID": phpsessid_cookie}
 
-    # Führen Sie die Anfrage aus und speichern Sie die Antwort als CSV-Datei
+    # Request the csv while providing the saved cookie
     response = requests.get(csv_url, cookies=cookies)
     with open(output_file, "wb") as f:
         f.write(response.content)
 
     print(f"CSV-Datei wurde erfolgreich als {output_file} gespeichert.")
 
-# Verwenden Sie die Funktion, um die CSV-Datei herunterzuladen
+# if cookie is present, call the download_csv function
 if phpsessid_cookie:
     download_csv(phpsessid_cookie)
 else:

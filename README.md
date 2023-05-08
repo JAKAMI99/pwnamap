@@ -36,3 +36,14 @@ There are two different ideas of data retrieval.
 ## Issues / Final Thoughts
 - onlinehashcrack's API seems not to be optimized for requesting to me. For requests there is the need of a filename, because it's designed for API uploads. Maybe webscraping and parsing HTML is suitable? Should be easy since there is no need of authorization (Just E-Mail provided when uploading).
 - onlinehashcrack has a feature to export *all* WPA related information trough a csv, that is amazing. Still unsure how to make use of it because it needs a cookie which gets generated after entering your mail. Have to look into it how to automate it.
+
+## Current Depencies
+- selenium (Just a temporary solution, because it's pretty overkill for this "simple" task. [I write simple in brackets, because I couldn't get it working while only using requests.])
+```
+pip3 install selenium
+```
+
+- requests
+```
+pip3 install requests
+```
