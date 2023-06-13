@@ -12,7 +12,7 @@ There are two different ideas of data retrieval.
 
 ### Fully "automatic" but third-party-dependent way:
 1. Autoupload captured handshakes to onlinehashcrack with the pwnagotchi **[Plugin](https://github.com/evilsocket/pwnagotchi/blob/master/pwnagotchi/plugins/default/onlinehashcrack.py)**
-2. Get *auto-uploaded* handshakes and cracked passwords from onlinehashcrack. There is an API available, not sure if suitable for requesting. Might have to use web scraping **[API Docs](https://api.onlinehashcrack.com/)**
+2. Get *auto-uploaded* handshakes and cracked passwords from onlinehashcrack. Works flawless with the "download_csv.py script"- ~~There is an API available, not sure if suitable for requesting. Might have to use web scraping **[API Docs](https://api.onlinehashcrack.com/)**~~
 3. Parse the mac-address out of the API-request together with the BSSID, AP-Vendor, Date added and if found the cracked password.
 
 ### Manual uploading
@@ -34,15 +34,10 @@ There are two different ideas of data retrieval.
 ---
 
 ## Issues / Final Thoughts
-- onlinehashcrack's API seems not to be optimized for requesting to me. For requests, there is the need of a filename, because it's designed for API uploads. Maybe webscraping and parsing HTML is suitable? Should be easy since there is no need of authorization (Just E-Mail provided when uploading).
-- onlinehashcrack has a feature to export *all* WPA related information through a csv, that is amazing. Still unsure how to make use of it because it requires a cookie which gets generated after entering your mail. Have to look into it, how to automate it.
+- ~~onlinehashcrack's API seems not to be optimized for requesting to me. For requests, there is the need of a filename, because it's designed for API uploads. Maybe webscraping and parsing HTML is suitable? Should be easy since there is no need of authorization (Just E-Mail provided when uploading).~~
+- onlinehashcrack has a feature to export *all* WPA related information through a csv, that is amazing. ~~Still unsure how to make use of it because it requires a cookie which gets generated after entering your mail. Have to look into it, how to automate it.~~
 
 ## Current Dependencies
-- selenium (Just a temporary solution, because it's pretty overkill for this "simple" task. [I write simple in brackets, because I couldn't get it working while only using requests.])
-```
-pip3 install selenium
-```
-
 - requests
 ```
 pip3 install requests
