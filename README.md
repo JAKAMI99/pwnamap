@@ -38,7 +38,7 @@ There are two different ideas of data retrieval.
 - onlinehashcrack has a feature to export *all* WPA related information through a csv, that is amazing. ~~Still unsure how to make use of it because it requires a cookie which gets generated after entering your mail. Have to look into it, how to automate it.~~
 
 ## Current Dependencies
-- requests
+- requests, pandas, folium
 ```
-pip3 install requests
+pip3 install requests, pandas, folium
 ```
