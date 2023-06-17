@@ -13,6 +13,7 @@ A selfhosted(!) map which shows Access-Points, your pwnagotchi captured a handsh
 - [x] Wigle.net API : Get geolocations
 - [x] Generate a map and plot POIs
 - [ ] Make deployable
+- [ ] Blacklist entries, that already hold geodata when requesting Wigle
 - Manual alternative for retrieving 
     - [ ] Handshakes (BSSIDs) - pwnagotchi plugin(?)
     - [ ] Geodata (own wardriving data) 

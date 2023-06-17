@@ -6,8 +6,8 @@ import map
 mail = "CHANGEME"                                                                                           ##
 #Wigle API Token (Sadly by default 10 requests/day)                                                         ##
 api_token = "CHANGEME"                                                                                      ##
-#Only lookup the geolocation of BSSIDs, that have a "password"-entry (Highly recommend)                     ##
-onlypw = True #[True/False]                                                                                 ##
+#Only lookup the geolocation of BSSIDs, that have a "password"-entry (Highly recommended)                   ##
+onlypw = True #[True/False]                                                                                ##
 ##############################################################################################################
 
 
