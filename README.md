@@ -3,11 +3,26 @@
 ---
 
 ## Idea
-A selfhosted(!) map which shows all captured handshakes and highlights those which are successfully got cracked. (red/green POIs)
+A selfhosted(!) map which shows Network-APs, where your pwnagotchi captured a handshake for. 
 
 ---
+## ToDo
+- [x] Automate CSV Export from onlinehashcrack.com
+- [x] Detect changes in CSV Export 
+- [ ] Detect new entries instead of changes
+- [x] Wigle.net API : Get geolocations
+- [x] Generate a map and plot POIs
+- [ ] Make deployable
+- Manual alternative for retrieving 
+    - [ ] Handshakes (BSSIDs) - pwnagotchi plugin(?)
+    - [ ] Geodata (own wardriving data) 
 
-## Workflow getting data
+## Fix
+- [ ] Error when authentication didn't work on onlinehashcrack.com
+
+
+
+## Workflow getting bssid data
 There are two different ideas of data retrieval. 
 
 ### Fully "automatic" but third-party-dependent way:
@@ -16,7 +31,7 @@ There are two different ideas of data retrieval.
 3. Parse the mac-address out of the API-request together with the BSSID, AP-Vendor, Date added and if found the cracked password.
 
 ### Manual uploading
-1. Manually upload the handshakes to a web server trough eg. sFTP(?)
+1. Manually upload the handshakes to a web server trough eg. sFTP/custom pwnagotchi plugin.
 2. Parse the mac-address and date captured out of the .pcap/.cap files. Could be automated with "folder change detection".
 
 ---
@@ -27,18 +42,17 @@ There are two different ideas of data retrieval.
 2. If geolocation is found, which is highly likely if **[Wardriving](https://en.wikipedia.org/wiki/Wardriving)** was enabled while the Pwnagotchi was running, parse it together with the other data points.
 
 ---
-    
-## Question / WIP
-- Which Map is easy to host, can be comfortable fed with geolocations and creating map points with data?
-
----
-
-## Issues / Final Thoughts
-- ~~onlinehashcrack's API seems not to be optimized for requesting to me. For requests, there is the need of a filename, because it's designed for API uploads. Maybe webscraping and parsing HTML is suitable? Should be easy since there is no need of authorization (Just E-Mail provided when uploading).~~
-- onlinehashcrack has a feature to export *all* WPA related information through a csv, that is amazing. ~~Still unsure how to make use of it because it requires a cookie which gets generated after entering your mail. Have to look into it, how to automate it.~~
 
 ## Current Dependencies
-- requests, pandas, folium
+- requests (API)
+- pandas (CSV)
+- folium (Map)
 ```
 pip3 install requests, pandas, folium
 ```
+
+## Usage
+Provide your wigle.net API key and your onlinehashcrack.com mail adress in the main.py.
+```python3 main.py```
+
+Open the created map.html
