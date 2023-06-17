@@ -3,7 +3,7 @@
 ---
 
 ## Idea
-A selfhosted(!) map which shows Network-APs, where your pwnagotchi captured a handshake for. 
+A selfhosted(!) map which shows Access-Points, your pwnagotchi captured a handshake and show 
 
 ---
 ## ToDo
@@ -18,7 +18,7 @@ A selfhosted(!) map which shows Network-APs, where your pwnagotchi captured a ha
     - [ ] Geodata (own wardriving data) 
 
 ## Fix
-- [ ] Error when authentication didn't work on onlinehashcrack.com
+- [ ] Error when authentication didn't worked on onlinehashcrack.com
 
 
 
@@ -27,7 +27,7 @@ There are two different ideas of data retrieval.
 
 ### Fully "automatic" but third-party-dependent way:
 1. Autoupload captured handshakes to onlinehashcrack with the pwnagotchi **[Plugin](https://github.com/evilsocket/pwnagotchi/blob/master/pwnagotchi/plugins/default/onlinehashcrack.py)**
-2. Get *auto-uploaded* handshakes and cracked passwords from onlinehashcrack. Works flawless with the "download_csv.py script"- ~~There is an API available, not sure if suitable for requesting. Might have to use web scraping **[API Docs](https://api.onlinehashcrack.com/)**~~
+2. Get *auto-uploaded* handshakes and cracked passwords from onlinehashcrack. Works flawless with the "download_csv.py script"- **[API Docs](https://api.onlinehashcrack.com/)**~~
 3. Parse the mac-address out of the API-request together with the BSSID, AP-Vendor, Date added and if found the cracked password.
 
 ### Manual uploading
@@ -50,9 +50,12 @@ There are two different ideas of data retrieval.
 ```
 pip3 install requests, pandas, folium
 ```
-
+---
 ## Usage
 Provide your wigle.net API key and your onlinehashcrack.com mail adress in the main.py.
 ```python3 main.py```
 
 Open the created map.html
+
+## Disclaimer
+This tool is intended for educational purposes only. Any illegal use is strictly prohibited. Use responsibly and in compliance with applicable laws. We are not liable for any misuse.
