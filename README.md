@@ -54,7 +54,9 @@ pip3 install requests, pandas, folium
 ## Usage
 Provide your wigle.net API key and your onlinehashcrack.com mail adress in the main.py.
 
-```python3 main.py```
+```
+python3 main.py
+```
 
 Open the created map.html
 
