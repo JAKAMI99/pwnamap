@@ -1,5 +1,6 @@
 # Automated Pwnagotchi Handshake Map
 
+## Currently WIP, because OnlineHashCracked removed the WPA-export completly...
 ---
 
 ## Idea
