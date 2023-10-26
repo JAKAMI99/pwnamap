@@ -49,7 +49,7 @@ There are two different ideas of data retrieval.
 - pandas (CSV)
 - folium (Map)
 ```
-pip3 install requests, pandas, folium
+pip3 install requests pandas folium
 ```
 ---
 ## Usage
