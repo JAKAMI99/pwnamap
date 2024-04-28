@@ -20,6 +20,7 @@ A self-hosted companion for your little toy "pwnagotchi" to get motivated to obt
 - [ ] Utilization from the gps plugin for pwnagotchis with a GPS module
 - [ ] More information about your pwnagotchi (Stats, name, last seen,... )
 - [ ] Import your selfcracked potfile
+- [ ] Prebuild Container on ghcr.io and Unraid Community Apps
 
 
 
@@ -33,13 +34,17 @@ That's why I recommend running the war driving app from Wigle (Link) on your pho
 
 # Install
 
-### Docker  (recommended) (comming in the next three days)
-
-
+### Docker  (recommended) 
 ```
-docker pull ghcr.io/JAKAMI99/pwnamap:latest
-
+git clone https://github.com/JAKAMI99/pwnamap.git
+docker build -t pwnamap:latest .
 docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/data/ pwnamap:latest
+```
+### Docker-Compose
+```
+git clone https://github.com/JAKAMI99/pwnamap.git
+docker-compose build
+docker-compose up
 ```
 (modify port and volume mount to your desires)
 ### Manual (Raspberry Pi, Bare Metal)
@@ -49,6 +54,7 @@ cd pwnamap/
 python3 -m pip install -r requirements.txt
 python3 run.py
 ```
+### Container ghcr.io soon™
 ### Available in the "Unraid" Community Apps soon™
 
 ---
