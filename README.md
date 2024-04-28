@@ -20,7 +20,7 @@ A self-hosted companion for your little toy "pwnagotchi" to get motivated to obt
 - [ ] Utilization from the gps plugin for pwnagotchis with a GPS module
 - [ ] More information about your pwnagotchi (Stats, name, last seen,... )
 - [ ] Import your selfcracked potfile
-- [ ] Prebuild Container on ghcr.io and Unraid Community Apps
+- [ ] Prebuilt Container on ghcr.io and Unraid Community Apps
 
 
 
