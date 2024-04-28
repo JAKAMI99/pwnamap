@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pwnamap</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <div class="logo">
+                <img src="static/images/logo.jpg" alt="Logo">
+            </div>
+        </a>
+        <div class="title">pwnamap</div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="window.location.href='pwnamap'">Pwnamap</button>
+        <button onclick="window.location.href='tools'">Tools</button> 
+        <button onclick="window.location.href='handshakes'">Handshakes</button>       
+        <button onclick="window.location.href='explore'">Database Explorer</button>        
+        <button onclick="window.location.href='stats'">Stats</button>
+        <button onclick="window.location.href='settings'">Settings</button>
+        <button onclick="window.location.href='logout'">Logout</button>
+
+    </div>
+</body>
+</html>

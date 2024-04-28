@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pwnamap</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <script>
+        function filterList() {
+            var input = document.getElementById("search");
+            var filter = input.value.toUpperCase();
+            var container = document.getElementById("file-list");
+            var items = container.getElementsByTagName("a");
+
+            for (var i = 0; i < items.length; i++) {
+                var text = items[i].innerText.toUpperCase();
+                items[i].style.display = text.indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    </script>
+    <style>
+        /* Define styles for the header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .scrollable-box {
+            max-height: 300px;  /* Fixed height for scrolling */
+            overflow-y: auto;  /* Enable vertical scrolling */
+            border: 1px solid #6200ea;  /* Border for visual separation */
+            padding: 10px;  /* Padding for spacing */
+            margin-top: 20px;  /* Increased space between elements */
+        }
+
+        .search-input {
+            margin-bottom: 20px;  /* Increased space between search box and results */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </div>
+        </a>
+        <div class="title">pwnamap</div>
+    </div>
+
+    <h1>Available Handshakes</h1>
+    <!-- Search box with increased margin-bottom for spacing -->
+    <input class="search-input" type="text" id="search" onkeyup="filterList()" placeholder="Search files...">
+    
+    <!-- Scrollable result box with increased margin-top -->
+    <div class="scrollable-box" id="file-list">
+        {% for file in files %}
+        <a href="{{ url_for('dynamic.download_handshake', filename=file) }}">{{ file }}</a><br />
+        {% endfor %}
+    </div>
+</body>
+</html>

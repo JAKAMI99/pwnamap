@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #121212; /* Dark mode background color */
+    color: white; /* Text color */
+}
+
+.header {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: flex-start; 
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-bottom: 10px; /* Adds padding below the header */
+    margin-bottom: 10px; /* Adds margin below the header */
+}
+
+/* Logo styling with consistent margin */
+.logo img {
+    width: 10vw; /* Sets width relative to the viewport */
+    height: auto;
+    border-radius: 50%; /* Creates a circular shape */
+    margin-right: 30px; /* Space between logo and title */
+}
+
+/* Title styling */
+.title {
+    font-size: 24px;
+    text-align: left; /* Aligns text to the left */
+    margin: 10px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+
+
+a {
+color: #6200ea; /* Set the desired color */
+text-decoration: none; /* Remove underline */
+}
+
+a:hover {
+color: #9c4dcc; /* Set color on hover */
+}
+
+.button-container button {
+    margin: 1vw;
+    padding: 1vh 2vw;
+    border: none;
+    border-radius: 10px;
+    background-color: #6200ea;
+    color: white;
+    font-size: 2vw;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #9c4dcc; /* Darker shade of purple on hover */
+}
+
+.button-container button:disabled {
+    background-color: grey; /* Grey out disabled buttons */
+    cursor: not-allowed; /* Change cursor on disabled buttons */
+}
+
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.number-box {
+    width: 10vw; /* Adjust width as needed */
+    padding: 1vh 2vw; /* Similar padding as the buttons */
+    border: none; /* No border */
+    border-radius: 10px; /* Rounded corners like the buttons */
+    background-color: #6200ea; /* Same background color as the buttons */
+    color: white; /* White text for contrast */
+    font-size: 2vw; /* Adjust font size to maintain proportions */
+}
+#live-results {
+    height: 300px; /* Adjust as needed */
+    overflow-y: auto; /* Allow vertical scrolling when content overflows */
+}

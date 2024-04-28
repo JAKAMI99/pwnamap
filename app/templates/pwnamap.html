@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pwnamap</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet.Locate CSS from jsDelivr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <!-- Favicon and Custom Stylesheet -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/map.css') }}">
+    <style>
+        /* Media query for smaller screens */
+            @media (max-width: 600px) {
+                .controls {
+                    flex-direction: column; /* Stack vertically */
+                    justify-content: flex-start; /* Align at the start */
+                    gap: 5px; /* Smaller gap for mobile */
+                    padding: 10px; /* Reduce padding for mobile */
+                    width: 100%; /* Full width */
+                }
+            
+                #map {
+                    top: 100px; /* Adjusted offset for mobile */
+                }
+            }
+
+        </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <div class="logo">
+                <img src="static/images/logo.jpg" alt="Logo">
+            </div>
+        </a>
+        <div class="title">pwnamap</div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Leaflet.Locate JavaScript from jsDelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <!-- Your Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/pwnamap.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <style>
+
+       
+        .clear-button {
+            margin-top: 10px; 
+            padding: 5px 10px; 
+            font-size: 14px; 
+            width: auto; 
+        }
+        
+        .result-container {
+            width: 80%;
+            height: 300px; 
+            background-color: black;
+            overflow-y: scroll; /* Enable scrolling */
+            border: 1px solid white;
+            padding: 10px;
+            margin-top: 20px; 
+        }
+        .result-text {
+            color: white;
+            font-family: monospace; 
+            white-space: pre-wrap;
+        }
+        
+        .result-text div {
+            margin-bottom: 5px; /* Add margin between log messages */
+        }
+        
+        </style>
+</head>
+
+<body>
+    <div class="header">
+        <a href="/">
+            <div class="logo">
+                <img src="static/images/logo.jpg" alt="Logo">
+            </div>
+        </a>
+        <div class="title">pwnamap</div>
+    </div>
+
+    <div class="button-container">
+        <button id="wpasec_button" onclick="runScript('wpasec')">Get WPASEC</button>
+        <div id="wpasec_result" class="result"></div>
+
+        <button id="wigle_button" onclick="runScript('wigle_export')">Get your WIGLE Uploads</button>
+        <div id="wigle_result" class="result"></div>
+
+        <button id="geolocate_local_button" onclick="runScript('geolocate_local')">Geolocate with local DB</button>
+        <div id="geolocate_local_result" class="result"></div>
+        
+        <button id="geolocate_wigle_button" onclick="runScript('geolocate_wigle')">Geolocate with wigle (API Limit)</button>
+        <div id="geolocate_wigle_result" class="result"></div>    
+    
+
+    </div>
+
+    <div class="result-container">
+        <div id="live-results" class="result-text"></div>
+    </div>
+    
+    <button class="clear-button" onclick="clearOutput()">Clear Output</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+</body>
+</html>

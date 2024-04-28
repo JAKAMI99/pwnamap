@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <style>
+    
+    form div {
+        margin-bottom: 20px;
+    }
+    
+    form div label {
+        display: inline-block;
+        width: 80px; 
+    }
+    
+    form div input[type="text"] {
+    width: calc(200% - 160px);
+    padding: 5px;
+    box-sizing: border-box;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">
+            <div class="logo">
+                <img src="static/images/logo.jpg" alt="Logo">
+            </div>
+        </a>
+        <div class="title">pwnamap</div>
+    </div>
+
+    <h1>Settings</h1>
+    <form id="credentials-form">
+        <h2>API Keys</h2>
+        <div>
+            <a href="https://wpa-sec.stanev.org/?get_key" target="_blank" class="link-anchor">WPASEC</a>
+            <input type="text" id="wpasec" name="wpasec">
+        </div>        
+    
+        <div>
+            <a href="https://wigle.net/account" target="_blank" class="link-anchor">WIGLE</a>
+            <input type="text" id="wigle" name="wigle">
+        </div>
+        <div>
+            <label for="pwnamap">Pwnamap</label>
+            <input type="text" id="pwnamap" name="pwnamap" readonly>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+    
+    <div id="feedback"></div>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pwnamap</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/map.css') }}">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css">
+    <!-- Leaflet.Locate CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <style>
+    /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column; /* Stack vertically */
+                justify-content: flex-start; /* Align at the start */
+                gap: 5px; /* Smaller gap for mobile */
+                padding: 10px; /* Reduce padding for mobile */
+                width: 100%; /* Full width */
+            }
+        
+            #map {
+                top: 350px; /* Adjusted offset for mobile */
+            }
+        }
+
+    
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Database Explorer</h1>
+    </div>
+
+    <div class="controls">
+        <!-- Network type dropdown -->
+        <label for="networkType">Network Type:</label>
+        <select id="networkType">
+            <option value="">All</option>
+            <option value="BT">Bluetooth</option>
+            <option value="BLE">BLE</option>
+            <option value="WIFI" selected>WIFI</option>
+            <option value="GSM">GSM</option>
+            <option value="LTE">LTE</option>
+        </select>
+
+        <!-- Encryption dropdown -->
+        <label for="encryption">Encryption:</label>
+        <select id="encryption">
+            <option value="">All</option>
+            <option value="WPA3">WPA3</option>
+            <option value="WPA2">WPA2</option>
+            <option value="WPA">WPA</option>
+            <option value="WEP">WEP</option>
+            <option value="None">None</option>
+        </select>
+
+        <!-- Search fields -->
+        <input type="text" id="searchInputName" placeholder="Name e.g. WiFi 2 Guest">
+        <input type="text" id="searchInputNetworkId" placeholder="MAC e.g. f8:e0:79:af:57:eb">
+        <button id="searchButton">Search</button>
+
+        <!-- Checkbox to exclude networks without SSID -->
+        <input type="checkbox" id="excludeNoSSID" checked />
+        <label for="excludeNoSSID">Exclude networks without SSID:</label>
+    </div>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- JavaScript dependencies for Leaflet and MarkerCluster -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <script src="{{ url_for('static', filename='js/explore.js') }}"></script>
+</body>
+</html>

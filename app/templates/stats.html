@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/menu.css">
+    <link rel="icon" href="/static/images/favicon.ico">  
+    <style>
+        h1, p, ul {
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .label {
+            display: inline-block;
+            width: 300px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="section">
+        <h2 class="section-title">Pwn</h2>
+        <ul>
+            <li>
+                <span class="label">Total cracked networks:</span>
+                <span class="number-box">{{ cracked_count }}</span>
+            </li>
+            <li>
+                <span class="label">Pwned networks (password+location):</span>
+                <span class="number-box">{{ pwned_count }}</span>
+            </li>
+            <li>
+                <span class="label">Total stored handshakes:</span>
+                <span class="number-box">{{ total_handshakes }}</span>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title">Database</h2>
+        <ul>
+            <li>
+                <span class="label">WIFI:</span>
+                <span class="number-box">{{ wifi_count }}</span>
+            </li>
+            <li>
+                <span class="label">Bluetooth:</span>
+                <span class="number-box">{{ bt_count }}</span>
+            </li>
+            <li>
+                <span class="label">BLE (Bluetooth Low Energy):</span>
+                <span class="number-box">{{ ble_count }}</span>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

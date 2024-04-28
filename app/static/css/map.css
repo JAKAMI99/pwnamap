@@ -1,0 +1,64 @@
+/* Global styles for body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Consistent background color */
+    color: #fff; /* Light text color */
+    margin: 0;
+    padding: 0;
+}
+
+/* Header section */
+.header {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: flex-start; /* Aligns content to the left */
+    align-items: center; /* Vertically center the content */
+    padding: 10px; /* Padding for the header */
+    background: #121212;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Full-width header */
+}
+
+/* Logo styling */
+.logo img {
+    width: 10vw; /* Sets width relative to the viewport */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 50%; /* Circular shape */
+    padding-left: 20px; /* Small padding to the left edge */
+}
+
+/* Title styling */
+.title {
+    font-size: 24px;
+    margin-left: 10px; /* Adds space between the logo and title */
+    margin: 0;
+}
+
+/* Controls section */
+.controls {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Align vertically */
+    gap: 10px; /* Space between controls */
+    padding: 20px; /* Padding for desktop */
+    color: white;
+    position: fixed;
+    top: 60px; /* Offset from the header */
+    left: 0;
+    width: 100%; /* Full width */
+}
+
+/* Map container */
+#map {
+    position: absolute;
+    top: 12vw; /* Offset for map */
+    bottom: 2vw;
+    left: 2vw;
+    right: 2vw;
+    border: 2px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
