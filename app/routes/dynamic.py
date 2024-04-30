@@ -47,34 +47,42 @@ def stats():
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    # Check if a table exists in SQLite
+    def table_exists(table_name):
+        cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
+        return cursor.fetchone() is not None
+
     try:
-        # Define SQL queries to count records for each condition
-        bt_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BT'"
-        ble_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BLE'"
-        wifi_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'WIFI'"
-        pwned_count_query = "SELECT COUNT(*) FROM pwned"
-        cracked_count_query = "SELECT COUNT(*) FROM wpasec"
+        # Check if the 'wigle' table exists before executing queries
+        if table_exists('wigle'):
+            # Define SQL queries to count records for each condition
+            bt_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BT'"
+            ble_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BLE'"
+            wifi_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'WIFI'"
 
-        # Execute the queries and retrieve results
-        cursor.execute(bt_count_query)
-        bt_count = cursor.fetchone()[0]
+            # Execute the queries and retrieve results
+            cursor.execute(bt_count_query)
+            bt_count = cursor.fetchone()[0]
 
-        cursor.execute(ble_count_query)
-        ble_count = cursor.fetchone()[0]
+            cursor.execute(ble_count_query)
+            ble_count = cursor.fetchone()[0]
 
-        cursor.execute(wifi_count_query)
-        wifi_count = cursor.fetchone()[0]
+            cursor.execute(wifi_count_query)
+            wifi_count = cursor.fetchone()[0]
 
-        cursor.execute(pwned_count_query)
-        pwned_count = cursor.fetchone()[0]
+        # Check if the 'wpasec' table exists
+        if table_exists('wpasec'):
+            cracked_count_query = "SELECT COUNT(*) FROM wpasec"
+            cursor.execute(cracked_count_query)
+            cracked_count = cursor.fetchone()[0]
 
-        cursor.execute(cracked_count_query)
-        cracked_count = cursor.fetchone()[0]
+        # Check if the 'pwned' table exists
+        if table_exists('pwned'):
+            pwned_count_query = "SELECT COUNT(*) FROM pwned"
+            cursor.execute(pwned_count_query)
+            pwned_count = cursor.fetchone()[0]
 
     except sqlite3.Error as e:
-        # If there's any error, set all counts to zero
-        bt_count = ble_count = wifi_count = pwned_count = cracked_count = 0
-        
         # Log the error with the detailed message
         log.error(f"Request Path: {request.path} - SQLite Error: {str(e)}")
 
@@ -82,7 +90,9 @@ def stats():
     handshake_dir = "app/data/handshakes/"
     if os.path.exists(handshake_dir):
         total_handshakes = len([f for f in os.listdir(handshake_dir) if os.path.isfile(os.path.join(handshake_dir, f))])
-        log.debug(f"Total Handshakes in dir {handshake_dir} was {total_handshakes}")
+    else:
+        total_handshakes = 0
+    
     # Close the database connection
     conn.close()
 
@@ -96,6 +106,7 @@ def stats():
         cracked_count=cracked_count,
         total_handshakes=total_handshakes,
     )
+
     
 @dynamic_bp.route('/logout')
 def logout():
