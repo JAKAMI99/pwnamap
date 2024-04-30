@@ -6,6 +6,13 @@
 ## TL;DR
 A self-hosted companion for your little toy "pwnagotchi" to get motivated to obtain more handshakes and learn more IT security. It puts your cracked networks on a map and features statistics for motivation.
 
+## Screenshots
+### Main Map
+![Screenshot of the Main Map](/images/pwnamap_main.png)
+### Database Explorer
+![Screenshot of the Database Explorer](/images/pwnamap_db.png)
+### Stats
+![Screenshot of the stats](/images/pwnamap_stats.png)
 
 ---
 ## Features working
