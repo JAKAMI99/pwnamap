@@ -66,7 +66,7 @@ You will be prompted to setup an user. (Use secure credentials)
 
 - Login
 
-- Go to the Settings and fill out your wpasec and wigle API-key and click save.
+- Go to the Settings and fill out your wpasec and wigle API-key and click save. Doublecheck for whitespaces.
 
 - Head over to the tools and run click the buttons to retrieve your latest wpa-sec potfile, your latest wigle uploads and geolocate with the local db.
 You can use the "geolocate with Wigle"-feature. It is really limited, more information in the Wigle API section.

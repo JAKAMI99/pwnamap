@@ -44,7 +44,7 @@ def parse_csv(csv_content):
 
                 # Format MAC addresses correctly
                 ap_mac = ':'.join(ap_mac[i:i + 2].upper() for i in range(0, len(ap_mac), 2))
-                sta_mac = ':'.join(sta_mac[i + 2:i + 4].upper() for i in range(0, len(ap_mac), 2))
+                sta_mac = ':'.join(sta_mac[i + 2].upper() for i in range(0, len(ap_mac), 2))
                 
                 timestamp = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 

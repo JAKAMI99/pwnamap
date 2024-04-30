@@ -175,7 +175,7 @@ def get_key(username):
     return api_key
 
 def main():
-    print("Wigle Downloaded: Starting")
+    print("Wigle Downloader: Starting")
     # Check for API key in creds.txt
     username = sys.argv[1]
     api_key = get_key(username)
