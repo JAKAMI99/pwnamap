@@ -1,4 +1,5 @@
-# Self-hosted pwnagotchi companion map
+# pwnamap
+## A Self-hosted pwnagotchi companion map
 
 ## Beta: 0.9.0
 ---
