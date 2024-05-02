@@ -39,6 +39,8 @@ def stats():
     bt_count = 0
     ble_count = 0
     wifi_count = 0
+    gsm_count = 0
+    lte_count = 0
     pwned_count = 0
     cracked_count = 0
     total_handshakes = 0
@@ -59,6 +61,8 @@ def stats():
             bt_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BT'"
             ble_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BLE'"
             wifi_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'WIFI'"
+            gsm_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'GSM'"
+            lte_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'LTE'"
 
             # Execute the queries and retrieve results
             cursor.execute(bt_count_query)
@@ -69,6 +73,13 @@ def stats():
 
             cursor.execute(wifi_count_query)
             wifi_count = cursor.fetchone()[0]
+
+            cursor.execute(gsm_count_query)
+            gsm_count = cursor.fetchone()[0]
+
+            cursor.execute(lte_count_query)
+            lte_count = cursor.fetchone()[0]                        
+
 
         # Check if the 'wpasec' table exists
         if table_exists('wpasec'):
@@ -105,6 +116,8 @@ def stats():
         pwned_count=pwned_count,
         cracked_count=cracked_count,
         total_handshakes=total_handshakes,
+        gsm_count=gsm_count,
+        lte_count=lte_count
     )
 
     
