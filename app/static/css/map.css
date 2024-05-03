@@ -23,17 +23,17 @@ body {
 
 /* Logo styling */
 .logo img {
-    width: 10vw; /* Sets width relative to the viewport */
+    width: 5vw; /* Sets width relative to the viewport */
     height: auto; /* Maintain aspect ratio */
     border-radius: 50%; /* Circular shape */
-    padding-left: 20px; /* Small padding to the left edge */
+    margin-right: 30px;
 }
 
 /* Title styling */
 .title {
-    font-size: 24px;
-    margin-left: 10px; /* Adds space between the logo and title */
-    margin: 0;
+    font-size: 2vw;
+    text-align: left;
+    margin: 10px;
 }
 
 /* Controls section */

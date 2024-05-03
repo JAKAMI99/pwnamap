@@ -33,12 +33,17 @@
 </head>
 <body>
     <div class="header">
-        <h1>Database Explorer</h1>
+        <a href="/">
+            <div class="logo">
+                <img src="static/images/logo.jpg" alt="Logo">
+            </div>
+        </a>
+        <div class="title">Database Explorer</div>
     </div>
 
     <div class="controls">
         <!-- Network type dropdown -->
-        <label for="networkType">Network Type:</label>
+        <label for="networkType">Type:</label>
         <select id="networkType">
             <option value="">All</option>
             <option value="BT">Bluetooth</option>
@@ -49,7 +54,7 @@
         </select>
 
         <!-- Encryption dropdown -->
-        <label for="encryption">Encryption:</label>
+        <label for="encryption">🔐:</label>
         <select id="encryption">
             <option value="">All</option>
             <option value="WPA3">WPA3</option>
@@ -66,7 +71,7 @@
 
         <!-- Checkbox to exclude networks without SSID -->
         <input type="checkbox" id="excludeNoSSID" checked />
-        <label for="excludeNoSSID">Exclude networks without SSID:</label>
+        <label for="excludeNoSSID">Exclude "no SSID":</label>
     </div>
 
     <!-- Map container -->
