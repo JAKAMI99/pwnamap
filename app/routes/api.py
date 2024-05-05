@@ -115,10 +115,10 @@ def exploreapi():
     # Construct parameterized query and parameters list
     parameters = []
     if name_query:
-        sql_query += " AND name LIKE ?"
+        sql_query += " AND UPPER(name) LIKE UPPER(?)"
         parameters.append(f'%{name_query}%')
     if network_id_filter:
-        sql_query += " AND network_id = ?"
+        sql_query += " AND UPPER(network_id) = UPPER(?)"
         parameters.append(network_id_filter)
     if encryption_filter:
         sql_query += " AND encryption = ?"
@@ -144,9 +144,8 @@ def exploreapi():
     # Construct list of dictionaries with column names as keys
     pwned_data = [dict(zip(column_names, row)) for row in rows]
     
-    # Return POI data as JSON
+    # Return data as JSON
     return jsonify(pwned_data)
-
 
 
 @api_bp.route('/api/credentials', methods=['GET', 'POST'])
