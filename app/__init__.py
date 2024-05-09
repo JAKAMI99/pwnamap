@@ -19,7 +19,8 @@ from .routes.setup import setup_bp
 required_directories = [ #Except logging, will be created trough logging_config
     'app/data',  # data dir
     'app/data/handshakes',  # Subdirectory for handshakes from pwnagotchi
-    'app/data/wigle/raw_kml/'
+    'app/data/wigle/raw_kml/', # Archive for old Downloads to now which are already downloaded
+    'app/data/wigle/new_kml'   # for new Wigle Downloads
 ]
 
 def create_app():
