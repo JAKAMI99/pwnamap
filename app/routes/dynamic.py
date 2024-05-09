@@ -120,7 +120,6 @@ def stats():
         lte_count=lte_count
     )
 
-    
 @dynamic_bp.route('/logout')
 def logout():
     # Clear the session

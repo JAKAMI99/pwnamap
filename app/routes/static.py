@@ -19,6 +19,11 @@ def pwnamap():
 def exploremap():
     return render_template('explore.html')
 
+@static_bp.route('/wardrive')
+@login_required
+def wardrive():
+    return render_template('wardrive.html')
+
 @static_bp.route('/tools')
 @login_required
 def tools():
