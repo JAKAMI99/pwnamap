@@ -139,10 +139,10 @@ def exploreapi():
         parameters.append(network_id_filter)
     if encryption_filter:
         if encryption_filter == "None":
-            sql_query += " AND WHERE encryption IN ('None','Unknown')"
+            sql_query += " AND encryption IN ('None','Unknown')"
         else:
             sql_query += " AND encryption = ?"
-        parameters.append(encryption_filter)
+            parameters.append(encryption_filter)
     if network_type_filter:
         sql_query += " AND network_type = ?"
         parameters.append(network_type_filter)
