@@ -1,4 +1,4 @@
-from flask import jsonify, request, Response, stream_with_context, Blueprint, session
+from flask import jsonify, request, Response, stream_with_context, Blueprint, session, send_file
 import sqlite3, os, subprocess, re, logging
 from .auth import verify_api_key, login_required, api_key_or_login_required
 
@@ -65,6 +65,23 @@ def run_script():
 
     return Response(stream_with_context(generate_output()), content_type='text/plain')
 
+@api_bp.route('/api/wardrive', methods=['GET'])
+def get_street_overlay():
+    log.info(f"Current working directory: {os.getcwd()}")
+
+    # Correct path to the GeoJSON file
+    geojson_file = "app/data/wardrive/wardrive_overlay.json"
+    log.debug(f"GeoJSON file path: {geojson_file}")
+
+    # Check if the file exists before attempting to serve it
+    if os.path.exists(geojson_file):
+        # Serve the GeoJSON file with a custom download name
+        return send_file(geojson_file, as_attachment=False, download_name="wardrive_overlay")
+    else:
+        # Return an error response if the file doesn't exist
+        return {"error": "GeoJSON wardrive overlay not found"}, 404
+
+
 
 @api_bp.route('/api/pwnamap')
 @login_required
@@ -121,7 +138,10 @@ def exploreapi():
         sql_query += " AND UPPER(network_id) = UPPER(?)"
         parameters.append(network_id_filter)
     if encryption_filter:
-        sql_query += " AND encryption = ?"
+        if encryption_filter == "None":
+            sql_query += " AND WHERE encryption IN ('None','Unknown')"
+        else:
+            sql_query += " AND encryption = ?"
         parameters.append(encryption_filter)
     if network_type_filter:
         sql_query += " AND network_type = ?"
