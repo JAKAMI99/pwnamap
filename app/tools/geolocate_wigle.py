@@ -69,15 +69,18 @@ def populate_pwned_data(api_key):
                 if response.status_code == 200:
                     wigle_data = response.json()
                     if 'results' in wigle_data and len(wigle_data['results']) > 0:
-                        print(f"Found geolocation for {ap_mac}")
+
                         result = wigle_data['results'][0]
                         name = result.get('ssid')
                         network_id = result.get('netid')
                         encryption = result.get('encryption')
                         latitude = result.get('trilat')
                         longitude = result.get('trilong')
+                        network_type = "WIFI" #Static value since only WIFI is expected (For local db)
+                        time = result('lasttime')
 
-                        print(f"Putting info {network_id} in db...")
+                        print(f"✅📌 Found geolocation for {name}({ap_mac}).")
+
 
                         try:
                             cursor.execute('''
@@ -87,10 +90,21 @@ def populate_pwned_data(api_key):
                             new_networks += 1
                         except sqlite3.Error as e:
                             print(f"Got error {e}")
-                            print(f"Error inserting entry for network_id: {network_id}")
+                            print(f"Got error {e} when inserting  entry for network_id: {network_id}")
+
+                        try:
+                            cursor.execute('''
+                                INSERT INTO wigle (name, network_id, encryption, latitude, longitude, network_type, time)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)
+                            ''', (name, network_id, encryption, latitude, longitude, network_type, time))
+                            new_networks += 1
+                        except sqlite3.Error as e:
+                            print(f"Got error {e} when inserting  entry for network_id: {network_id}")
+                            print(f"Error ")
+
                     else:
                         no_geolocation_networks += 1
-                        print(f"No geolocation for {ap_mac} found...")
+                        print(f"❌ No geolocation for {ap_mac} found...")
                 else:
                     print(f"Error retrieving data for {ap_mac}. Status code: {response.status_code}")
 
@@ -129,7 +143,7 @@ def main():
         print(f"Processed {total_networks} Networks in total. {new_networks} were new and {no_geolocation_networks} had no geolocation in the WiGLE API ")
     else:
         print("API key not found for the specified username. Set it up in the Settings")
-    print("Geolocate Wigle: Finished ✅")
+    print(" Geolocate Wigle: Finished")
 
 if __name__ == '__main__':
     main()
