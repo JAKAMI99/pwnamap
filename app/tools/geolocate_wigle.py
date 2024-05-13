@@ -143,7 +143,7 @@ def main():
         print(f"Processed {total_networks} Networks in total. {new_networks} were new and {no_geolocation_networks} had no geolocation in the WiGLE API ")
     else:
         print("API key not found for the specified username. Set it up in the Settings")
-    print(" Geolocate Wigle: Finished")
+    print("✅ Geolocate Wigle: Finished")
 
 if __name__ == '__main__':
     main()
