@@ -6,59 +6,112 @@
     <title>pwnamap</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <script>
-        function filterList() {
-            var input = document.getElementById("search");
-            var filter = input.value.toUpperCase();
-            var container = document.getElementById("file-list");
-            var items = container.getElementsByTagName("a");
-
-            for (var i = 0; i < items.length; i++) {
-                var text = items[i].innerText.toUpperCase();
-                items[i].style.display = text.indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-    </script>
     <style>
         /* Define styles for the header */
         .header {
-            display: flex;
-            align-items: center;
+            color: #fff;
             padding: 10px;
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Align items vertically */
+            justify-content: space-between; /* Spacing between items */
         }
 
-        .scrollable-box {
-            max-height: 300px;  /* Fixed height for scrolling */
-            overflow-y: auto;  /* Enable vertical scrolling */
-            border: 1px solid #6200ea;  /* Border for visual separation */
-            padding: 10px;  /* Padding for spacing */
-            margin-top: 20px;  /* Increased space between elements */
+        .logo img {
+            max-width: 100px;
         }
 
+        .title {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        /* Updated styles for the search input */
         .search-input {
-            margin-bottom: 20px;  /* Increased space between search box and results */
+            width: calc(100% - 200px); /* Adjusting width to accommodate the offset */
+            padding: 10px;
+            margin-top: 150px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 20px; /* Making the search input rounded */
+            outline: none; /* Removing default focus outline */
+            transition: border-color 0.3s ease; /* Adding transition effect */
+        }
+
+        .search-input:focus {
+            border-color: #6200ea; /* Changing border color on focus */
+        }
+
+        .result-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+        }
+
+        .file-info {
+            border-bottom: 1px solid #ccc; /* Add border between each file info */
+            padding: 10px 0; /* Add padding for better spacing */
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Align items vertically */
+        }
+
+        .file-info:last-child {
+            border-bottom: none; /* Remove border for the last file info */
+        }
+
+        .file-link {
+            color: #6200ea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .file-link:hover {
+            color: #330099;
+        }
+
+        .timestamp {
+            color: #666; /* Changed color for timestamp */
+            margin-left: auto; /* Push timestamp to the right */
+            tab-size: 20px; /* Adjust tab size for alignment */
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <a href="/">
-            <div class="logo">
+        <div class="logo">
+            <a href="/">
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
-            </div>
-        </a>
+            </a>
+        </div>
         <div class="title">handshakes</div>
     </div>
 
-    <h1>Available Handshakes</h1>
-    <!-- Search box with increased margin-bottom for spacing -->
     <input class="search-input" type="text" id="search" onkeyup="filterList()" placeholder="Search files...">
     
-    <!-- Scrollable result box with increased margin-top -->
-    <div class="scrollable-box" id="file-list">
-        {% for file in files %}
-        <a href="{{ url_for('dynamic.download_handshake', filename=file) }}">{{ file }}</a><br />
+    <div class="result-box" id="file-list">
+        {% for file, created in files_with_creation_time %}
+        <div class="file-info">
+            <div>
+                <span class="file-name"><a href="{{ url_for('dynamic.download_handshake', filename=file) }}" class="file-link">{{ file }}</a></span>
+                <span class="timestamp">Created: {{ created.strftime('%Y-%m-%d\t%H:%M:%S') }}</span> <!-- Using \t for tab spacing -->
+            </div>
+        </div>
         {% endfor %}
     </div>
+    
+    <script>
+        function filterList() {
+            var input = document.getElementById("search");
+            var filter = input.value.toUpperCase();
+            var container = document.getElementById("file-list");
+            var items = container.getElementsByClassName("file-info");
+
+            for (var i = 0; i < items.length; i++) {
+                var text = items[i].getElementsByClassName("file-name")[0].innerText.toUpperCase();
+                items[i].style.display = text.indexOf(filter) > -1 ? "" : "none";
+            }
+        }
+    </script>
 </body>
 </html>

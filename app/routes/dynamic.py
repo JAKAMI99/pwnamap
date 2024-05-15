@@ -1,6 +1,8 @@
-from flask import render_template, jsonify, request, Blueprint, redirect, session, url_for, send_from_directory
+from flask import render_template, request, Blueprint, redirect, session, url_for, send_from_directory
 import sqlite3, os, logging
+from datetime import datetime
 from .auth import login_required, authenticate_user
+from os.path import join, getctime
 
 handshake_path = "app/data/handshakes/"
 handshake_path_abs = os.path.abspath(handshake_path)
@@ -132,8 +134,15 @@ def logout():
 @dynamic_bp.route('/handshakes')
 @login_required
 def list_handshakes():
-    files = os.listdir(handshake_path_abs)
-    return render_template("handshakes.html", files=files)
+    handshake_files = os.listdir(handshake_path_abs)
+    # Sort files by creation time
+    handshake_files.sort(key=lambda x: getctime(join(handshake_path_abs, x)), reverse=True)
+    # Create a list of (file, created) tuples
+    files_with_creation_time = []
+    for file in handshake_files:
+        created = datetime.fromtimestamp(getctime(join(handshake_path_abs, file)))
+        files_with_creation_time.append((file, created))
+    return render_template("handshakes.html", files_with_creation_time=files_with_creation_time)
 
 # Route to download a specific file by its filename
 @dynamic_bp.route("/handshakes/<filename>")
