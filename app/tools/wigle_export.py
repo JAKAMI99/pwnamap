@@ -193,7 +193,7 @@ def main():
             print("No new files to process")
     else:
         print("API key not found for the specified username.")
-    print("Wigle Downloaded: Finished ✅")
+    print("✅ Wigle Downloaded: Finished")
     
 
 if __name__ == '__main__':

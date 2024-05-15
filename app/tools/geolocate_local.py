@@ -102,7 +102,7 @@ def main():
     print("Local Geolocate: Starting")
     new_networks, no_geolocation_networks, total_networks = populate_pwned_data()
     print(f"Processed {total_networks} Networks in total. {new_networks} were new and {no_geolocation_networks} had no geolocation in the local DB ")
-    print("Local Geolocate: Finished ✅")
+    print("✅Local Geolocate: Finished")
 
 if __name__ == "__main__":
     main()  # Ensure this is at the end of the script
