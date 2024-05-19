@@ -26,7 +26,7 @@ def create_pwned_table():
                 latitude REAL,
                 longitude REAL,
                 password TEXT,
-                timestamp TEXT,
+                timestamp TEXT
             )
         ''')
 
