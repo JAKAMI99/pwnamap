@@ -1,3 +1,4 @@
+
 function clearOutput() {
     $('#live-results').empty(); // Empty the content of the liveResults div
 }
@@ -43,7 +44,6 @@ function runScript(scriptName) {
         },
         success: function (response) {
             // Display the final response in the liveResults div
-            // deepcode ignore DOMXSS: Trusted enviroment
             liveResults.html(response);
             scrollToBottom(liveResults); // Scroll to bottom
             enableAllButtons(); // Re-enable all buttons
@@ -57,3 +57,33 @@ function runScript(scriptName) {
         }
     });
 }
+
+function uploadFile(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+            url: '/api/pot_upload',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.status === "success") {
+                    runScript('manual_pot');
+                } else {
+                    $('#live-results').html(response.message);
+                    enableAllButtons();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error uploading file:', error);
+                $('#live-results').html('Error uploading file. Please try again.');
+                enableAllButtons();
+            }
+        });
+    }
+}
+

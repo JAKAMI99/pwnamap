@@ -7,8 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <style>
-
-       
         .clear-button {
             margin-top: 10px; 
             padding: 5px 10px; 
@@ -34,8 +32,7 @@
         .result-text div {
             margin-bottom: 5px; /* Add margin between log messages */
         }
-        
-        </style>
+    </style>
 </head>
 
 <body>
@@ -59,9 +56,11 @@
         <div id="geolocate_local_result" class="result"></div>
         
         <button id="geolocate_wigle_button" onclick="runScript('geolocate_wigle')">Geolocate with wigle (API Limit)</button>
-        <div id="geolocate_wigle_result" class="result"></div>    
-    
+        <div id="geolocate_wigle_result" class="result"></div> 
 
+        <button id="manual_pot_button" title="Click to upload a potfile (Allowed extensions are '.22000','.pot', '.potfile')" onclick="document.getElementById('file_input').click();">Upload and import manual potfile</button>
+        <input type="file" id="file_input" style="display: none;" onchange="uploadFile(event)">
+        <div id="manual_pot_result" class="result"></div> 
     </div>
 
     <div class="result-container">

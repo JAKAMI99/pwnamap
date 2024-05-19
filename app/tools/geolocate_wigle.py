@@ -77,7 +77,7 @@ def populate_pwned_data(api_key):
                         latitude = result.get('trilat')
                         longitude = result.get('trilong')
                         network_type = "WIFI" #Static value since only WIFI is expected (For local db)
-                        time = result('lasttime')
+                        time = result.get('lasttime')
 
                         print(f"✅📌 Found geolocation for {name}({ap_mac}).")
 
@@ -90,7 +90,7 @@ def populate_pwned_data(api_key):
                             new_networks += 1
                         except sqlite3.Error as e:
                             print(f"Got error {e}")
-                            print(f"Got error {e} when inserting  entry for network_id: {network_id}")
+                            print(f"[PWNED]Got error {e} when inserting entry for network_id: {network_id}")
 
                         try:
                             cursor.execute('''
@@ -99,7 +99,7 @@ def populate_pwned_data(api_key):
                             ''', (name, network_id, encryption, latitude, longitude, network_type, time))
                             new_networks += 1
                         except sqlite3.Error as e:
-                            print(f"Got error {e} when inserting  entry for network_id: {network_id}")
+                            print(f"[WIGLE]Got error {e} when inserting entry for network_id: {network_id}")
                             print(f"Error ")
 
                     else:

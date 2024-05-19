@@ -1,14 +1,16 @@
 from flask import jsonify, request, Response, stream_with_context, Blueprint, session, send_file
 import sqlite3, os, subprocess, re, logging
+from werkzeug.utils import secure_filename
 from .auth import verify_api_key, login_required, api_key_or_login_required
-
-
-UPLOAD_DIRECTORY = os.path.abspath("app/data/handshakes") #Directory to save handshakes to, that got uploaded by pwnagotchis plugin
-
-
 
 api_bp = Blueprint('api', __name__)
 log = logging.getLogger(__name__)
+
+
+POT_UPLOAD_FOLDER = 'app/data/potfile'
+ALLOWED_EXTENSIONS = {'pot', '22000', 'potfile'}
+
+
 
 def get_db_connection():
     conn = sqlite3.connect('app/data/pwnamap.db')
@@ -17,15 +19,16 @@ def get_db_connection():
 
 
 
-
 tools = {
     'wpasec': 'app/tools/wpasec.py',
     'wigle_export': 'app/tools/wigle_export.py',
     'geolocate_local': 'app/tools/geolocate_local.py',
     'geolocate_wigle': 'app/tools/geolocate_wigle.py',
+    'manual_pot': 'app/tools/manual_pot.py',
 }
 
 @api_bp.route('/api/tools', methods=['POST'])
+@login_required
 def run_script():
     # Get script name and optional arguments from the POST request
     script_name = request.json.get('script_name')  # The script to be run
@@ -41,7 +44,7 @@ def run_script():
             return {"status": "error", "message": f"Script not found, available options are {', '.join(tools.keys())}"}, 404
 
         
-        if script_name in ['geolocate_wigle', 'wigle_export', 'wpasec']:
+        if script_name in ['geolocate_wigle', 'wigle_export', 'wpasec', 'manual_pot']:
             username = session.get("username")
             command = ["python", "-u", tools[script_name], username]
             log.debug("Tool command: %s", command)
@@ -65,7 +68,27 @@ def run_script():
 
     return Response(stream_with_context(generate_output()), content_type='text/plain')
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@api_bp.route('/api/pot_upload', methods=['POST'])
+@api_key_or_login_required
+def upload_pot():
+    if 'file' not in request.files:
+        return {"status": "error", "message": "No file part"}, 400
+    file = request.files['file']
+    if file.filename == '':
+        return {"status": "error", "message": "No selected file"}, 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(POT_UPLOAD_FOLDER, filename))
+        return {"status": "success", "message": "File uploaded successfully"}, 200
+    else:
+        return {"status": "error", "message": "File type not allowed"}, 400
+
+
 @api_bp.route('/api/wardrive', methods=['GET'])
+@login_required
 def get_street_overlay():
     log.info(f"Current working directory: {os.getcwd()}")
 
