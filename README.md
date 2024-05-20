@@ -118,7 +118,8 @@ You can use the following parameter for your query
 When geolocate with the Wigle API, you are likely to run into the API Limit really fast.
 New wigle users report they have less than 10 queries a day, even tho you can request an increase of your daily limit, I recommend to build your own database by wardriving and retrieving your uploads from wigle, which are not limited and only use the wigle API as a second choice.
 This way you start to build up your own indepent Database which you can later user for other projects (Pwnamap includes a simple API you can utilize if you want)
-### Information: When adding your API Token to pwnamap, make sure to use the "Encoded for use" API Token and not the Token itself, otherwise you will get blocked by the API!
+### Information: 
+When adding your API Token to pwnamap, make sure to use the "Encoded for use" API Token and not the Token itself, otherwise you will get blocked by the API!
 
 ![Screenshot of the API Token](/images/WigleAPI.png)
 
