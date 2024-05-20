@@ -123,6 +123,9 @@ When adding your API Token to pwnamap, make sure to use the "Encoded for use" AP
 
 ![Screenshot of the API Token](/images/WigleAPI.png)
 
+### Doublecheck for whitespaces! When you copy the Encoded for use Key, you end up with whitespaces by default
+
+
 
 
 
