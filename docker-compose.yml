@@ -7,7 +7,7 @@ services:
     ports:
       - "1337:1337"  # Maps port 1337 on the host to port 1337 in the container
     volumes:
-      - "${HOME}/.docker-data:/app/data"  # Volume mapping for persistent data
+      - "${HOME}/.docker-data:/app/app/data"  # Volume mapping for persistent data
     restart: on-failure  # Restarts the container if it fails
     environment:
       APP_VERSION: "0.9.0"  # Application version
