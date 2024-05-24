@@ -3,7 +3,6 @@ import os, logging
 
 #Logging config
 from . import logging_config
-from . import dbsetup
 
 log = logging.getLogger(__name__)
 
