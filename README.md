@@ -23,12 +23,11 @@ A self-hosted companion for your little toy "pwnagotchi" to get motivated to obt
 - [x] Deployable as a docker container
 - [x] Receive all handshakes that get send by pwnagotochis [pwnamap plugin](https://github.com/JAKAMI99/pwnamap-plugin)
 - [x] Your own little wigle API that utilizes your local DB
+- [x] Import your selfcracked potfile
 
 ## Comming soon™
 - [ ] Utilize the gps plugin for pwnagotchis with a GPS module
 - [ ] More information about your pwnagotchi (Stats, name, last seen,... )
-- [ ] Import your selfcracked potfile
-- [ ] Better handshake overview
 
 
 
