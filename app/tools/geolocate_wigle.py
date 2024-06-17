@@ -1,7 +1,7 @@
 import sqlite3
 import sys
 import requests
-
+import random
 def get_db_connection():
     conn = sqlite3.connect('app/data/pwnamap.db')
     conn.row_factory = sqlite3.Row
@@ -46,11 +46,13 @@ def populate_pwned_data(api_key):
     with get_db_connection() as conn:
         cursor = conn.cursor()
         try:
-            cursor.execute('SELECT ap_mac, password FROM wpasec')
+            cursor.execute('SELECT DISTINCT ap_mac, password FROM wpasec')
             wpasec_data = cursor.fetchall()
 
             cursor.execute('SELECT network_id FROM pwned')
             existing_network_ids = {row[0] for row in cursor.fetchall()}
+
+            random.shuffle(wpasec_data) #shuffle data to increase chance for hits for the next day when running into the API Limit 
 
             for row in wpasec_data:
                 ap_mac, password = row
