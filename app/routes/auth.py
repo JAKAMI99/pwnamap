@@ -116,7 +116,6 @@ def api_key_or_login_required(f):
         # If neither is valid, return 401 Unauthorized
         response = {
             "error": "Unauthorized. Please log in or provide a valid API key."
-            
         }
         log.debug("API Key was not valid. by @api_key_or_login_required")
         return jsonify(response), 401  # Return JSON response with HTTP 401 status

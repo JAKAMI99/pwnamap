@@ -29,7 +29,7 @@ def login():
         
         else:
             error = "Invalid username or password"
-            log.warn(f"User {username} could not be authenticated.")
+            log.warning(f"User {username} could not be authenticated.")
     
     # Render the login template with the error message
     return render_template('login.html', error=error)
@@ -37,15 +37,8 @@ def login():
 @dynamic_bp.route('/stats')
 @login_required
 def stats():
-    # Initialize counts with default values
-    bt_count = 0
-    ble_count = 0
-    wifi_count = 0
-    gsm_count = 0
-    lte_count = 0
-    pwned_count = 0
-    cracked_count = 0
-    total_handshakes = 0
+    # Initialize counts with default values of 0
+    bt_count = ble_count = wifi_count = gsm_count = lte_count = pwned_count = cracked_count = 0
 
     # Connect to the SQLite database
     conn = get_db_connection()

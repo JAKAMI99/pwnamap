@@ -34,7 +34,7 @@ def run_script():
     script_name = request.json.get('script_name')  # The script to be run
     
     if not script_name:
-        log.warn(f"Request Path: {request.path} - No script was provided")
+        log.warning(f"Request Path: {request.path} - No script was provided")
         return {"status": "error", "message": "Script name not provided."}, 400
     else:
 
@@ -260,14 +260,14 @@ def upload_file():
     
     # Check for file in request
     if 'file' not in request.files:
-        log.warn("Request Path: {request.path} - No file in request ")
+        log.warning("Request Path: {request.path} - No file in request ")
         return jsonify({'error': 'No file part in the request'}), 400
     
     file = request.files['file']
     
     # Check if file name is empty
     if file.filename == '':
-        log.warn("Request Path: {request.path} - No filename in request ")
+        log.warning("Request Path: {request.path} - No filename in request ")
         return jsonify({'error': 'No file selected for uploading'}), 400
     
     # Sanitize file name
