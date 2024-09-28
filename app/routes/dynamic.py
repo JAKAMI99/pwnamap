@@ -1,18 +1,14 @@
-from flask import render_template, request, Blueprint, redirect, session, url_for, send_from_directory
+from flask import render_template, request, Blueprint, redirect, session, send_from_directory
 import sqlite3, os, logging
 from datetime import datetime
 from .auth import login_required, authenticate_user
 from os.path import join, getctime
+from ..tools.db import get_db_connection
 
 handshake_path = "app/data/handshakes/"
 handshake_path_abs = os.path.abspath(handshake_path)
 log = logging.getLogger(__name__)
 dynamic_bp = Blueprint('dynamic', __name__)
-
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 @dynamic_bp.route('/login', methods=['GET', 'POST'])
@@ -52,28 +48,18 @@ def stats():
     try:
         # Check if the 'wigle' table exists before executing queries
         if table_exists('wigle'):
-            # Define SQL queries to count records for each condition
-            bt_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BT'"
-            ble_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'BLE'"
-            wifi_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'WIFI'"
-            gsm_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'GSM'"
-            lte_count_query = "SELECT COUNT(*) FROM wigle WHERE network_type = 'LTE'"
+            # Define and execute SQL queries to count records for each condition
+            net_type_id = {
+                'bt_count': "'BT'",
+                'ble_count': "'BLE'",
+                'wifi_count': "'WIFI'",
+                'gsm_count': "'GSM'",
+                'lte_count': "'LTE'"
+            }
 
-            # Execute the queries and retrieve results
-            cursor.execute(bt_count_query)
-            bt_count = cursor.fetchone()[0]
-
-            cursor.execute(ble_count_query)
-            ble_count = cursor.fetchone()[0]
-
-            cursor.execute(wifi_count_query)
-            wifi_count = cursor.fetchone()[0]
-
-            cursor.execute(gsm_count_query)
-            gsm_count = cursor.fetchone()[0]
-
-            cursor.execute(lte_count_query)
-            lte_count = cursor.fetchone()[0]                        
+            for key, net_type in net_type_id.items():
+                cursor.execute("SELECT COUNT(*) FROM wigle WHERE network_type = "+ net_type)
+                locals()[key] = cursor.fetchone()[0]
 
 
         # Check if the 'wpasec' table exists
@@ -118,7 +104,6 @@ def stats():
     
 @dynamic_bp.route('/logout')
 def logout():
-    # Clear the session
     session.clear()
     log.debug(f"Request Path: {request.path} - User was successfully logged out ")
     # Redirect to the home page or any other desired page

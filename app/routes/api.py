@@ -2,6 +2,7 @@ from flask import jsonify, request, Response, stream_with_context, Blueprint, se
 import sqlite3, os, subprocess, re, logging
 from werkzeug.utils import secure_filename
 from .auth import verify_api_key, login_required, api_key_or_login_required
+from ..tools.db import get_db_connection
 
 api_bp = Blueprint('api', __name__)
 log = logging.getLogger(__name__)
@@ -9,13 +10,6 @@ log = logging.getLogger(__name__)
 
 POT_UPLOAD_FOLDER = 'app/data/potfile'
 ALLOWED_EXTENSIONS = {'pot', '22000', 'potfile'}
-
-
-
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 
@@ -54,7 +48,7 @@ def run_script():
 
         if script_name in ['geolocate_local']:
             command = ["python", "-u", tools[script_name]]  # -u for unbuffered output
-            log.debug("Tool command: %s", command)
+            log.debug(f"Tool command: {command}")
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
 
 
@@ -65,7 +59,6 @@ def run_script():
             finally:
                 process.stdout.close()
                 process.wait()
-
     return Response(stream_with_context(generate_output()), content_type='text/plain')
 
 def allowed_file(filename):
@@ -137,7 +130,6 @@ def pwnapi():
 @api_bp.route('/api/explore')
 @api_key_or_login_required
 def exploreapi():
-    # Connect to SQLite database
     log.debug(f"Request Path: {request.path} was called ")
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -177,17 +169,14 @@ def exploreapi():
     # Execute parameterized SQL query
     cursor.execute(sql_query, parameters)
     rows = cursor.fetchall()
-    
-    # Get column names
+
     column_names = [description[0] for description in cursor.description]
-    
-    # Close database connection
+
     conn.close()
     
     # Construct list of dictionaries with column names as keys
     pwned_data = [dict(zip(column_names, row)) for row in rows]
-    
-    # Return data as JSON
+
     return jsonify(pwned_data)
 
 
@@ -269,8 +258,7 @@ def upload_file():
     if file.filename == '':
         log.warning("Request Path: {request.path} - No filename in request ")
         return jsonify({'error': 'No file selected for uploading'}), 400
-    
-    # Sanitize file name
+
     filename = sanitize_filename(file.filename)
     
     # Directory where files are stored
@@ -282,7 +270,6 @@ def upload_file():
         log.info("Request Path: {request.path} - File already submitted ")        
         return jsonify({'message': 'Already submitted'}), 200  # Return a success status code with a custom message
 
-    
     # Save file securely
     file.save(file_path)
     

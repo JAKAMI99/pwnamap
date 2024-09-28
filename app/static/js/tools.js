@@ -4,16 +4,16 @@ function clearOutput() {
 }
 
 function disableAllButtons() {
-    $('button').prop('disabled', true); // Disable all buttons
+    $('button').prop('disabled', true);
 }
 
 function enableAllButtons() {
-    $('button').prop('disabled', false); // Re-enable all buttons
+    $('button').prop('disabled', false);
 }
 
 function scrollToBottom(element) {
     var height = element.prop('scrollHeight');
-    element.scrollTop(height); // Scroll to the bottom
+    element.scrollTop(height);
 }
 
 function runScript(scriptName) {
@@ -31,8 +31,6 @@ function runScript(scriptName) {
             onprogress: function (e) {
                 // Append the entire response text to the liveResults div
                 liveResults.html(e.currentTarget.responseText);
-
-                // Scroll to the bottom after updating the content
                 scrollToBottom(liveResults);
             },
             onerror: function (xhr, status, error) {

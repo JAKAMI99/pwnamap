@@ -1,17 +1,13 @@
-from flask import render_template, request, Blueprint, redirect, session, url_for
+from flask import render_template, request, Blueprint, redirect, url_for
 import logging
-import sqlite3, secrets, bcrypt, os
+from ..tools.db import get_db_connection
+import secrets, bcrypt
 
 setup_bp = Blueprint('setup', __name__)
 log = logging.getLogger(__name__)
 
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
 def create_user(username, password):
-    print ("Creating new user")
+    print("Creating new user")
     log.info(f"Creating new user {username}")
     try:
         conn = get_db_connection()
@@ -26,7 +22,7 @@ def create_user(username, password):
         conn.commit()
         conn.close()
         print(f"User {username} was created successfully.")
-        print("Your new API-key is:", api_key)  # Modified print statement
+        print(f"Your new API-key is:{api_key}")
     except Exception as e:
         print("Error:", e)
         log.fatal(f"Request Path: {request.path} - Error when creating a user:{str(e)}")

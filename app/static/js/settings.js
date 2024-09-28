@@ -12,8 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission
     document.getElementById('credentials-form').addEventListener('submit', function(event) {
         event.preventDefault();
-        
-        // Get form data
+
         const formData = new FormData(this);
 
         // Send credentials to the server

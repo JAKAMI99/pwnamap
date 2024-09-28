@@ -2,46 +2,11 @@ import sqlite3
 import sys
 import requests
 import random
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+from app.tools.db import get_db_connection, create_pwned_table
 
-def create_pwned_table():
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS pwned (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                network_id TEXT,
-                encryption TEXT,
-                latitude REAL,
-                longitude REAL,
-                password TEXT,
-                UNIQUE (network_id)
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS wigle (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                network_id TEXT UNIQUE,
-                encryption TEXT,
-                time TEXT,
-                signal REAL,
-                accuracy REAL,
-                network_type TEXT,
-                latitude REAL,
-                longitude REAL
-            )
-        ''')
-        conn.commit()
 
 def populate_pwned_data(api_key):
-    new_networks = 0
-    no_geolocation_networks = 0
-    total_networks = 0
+    new_networks = no_geolocation_networks = total_networks = 0
 
     with get_db_connection() as conn:
         cursor = conn.cursor()

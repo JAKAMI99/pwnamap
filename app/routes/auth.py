@@ -103,9 +103,10 @@ def verify_api_key(api_key):
 def api_key_or_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Check if the session is valid
+
         if 'username' in session:
-            return f(*args, **kwargs)  # Session is valid, proceed with the request
+            return f(*args, **kwargs)
+
         log.debug("User authenticated by @api_key_or_login_required")
         # Otherwise, check if there's a valid API key
         api_key = request.headers.get("X-API-KEY") or request.args.get("api_key")

@@ -1,16 +1,10 @@
 import requests, os, sys, sqlite3, shutil
 import xml.etree.ElementTree as ET
 
-
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+from app.tools.db import get_db_connection
 
 new_kml = "app/data/wigle/new_kml/"
 old_kml = 'app/data/wigle/raw_kml'
-
-
 
 def sanitize_filename(filename):
     """Sanitize the filename by removing disallowed characters."""
@@ -91,7 +85,7 @@ def download(api_key, old_kml, new_kml):
             print("Authentication error: Please check your API key.")
             raise  # Re-raise the exception to stop the script execution
         else:
-            print("An error occurred:", str(e))
+            print(f"An error occurred:{e}")
 
 
 
@@ -186,7 +180,7 @@ def main():
     username = sys.argv[1]
     api_key = get_key(username)
     if api_key:  # Ensure API key exists before attempting download
-        if download(api_key, old_kml, new_kml) == True: # Checks for new uploads and then checks if data was downloaded
+        if download(api_key, old_kml, new_kml): # Checks for new uploads and then checks if data was downloaded
             process(new_kml, old_kml) # Processes all new downloads
             print("Processing completed")
         else:

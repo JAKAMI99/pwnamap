@@ -2,47 +2,6 @@ import sqlite3, logging
 
 log = logging.getLogger(__name__)
 
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-
-def create_pwned_table():
-    try:
-        # Connect to SQLite database
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        # Create the 'pwned' table if it doesn't exist
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS pwned (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                network_id TEXT UNIQUE,
-                encryption TEXT,
-                accuracy REAL,
-                latitude REAL,
-                longitude REAL,
-                password TEXT,
-                timestamp TEXT
-            )
-        ''')
-
-        # Commit changes
-        conn.commit()
-
-    except sqlite3.Error as e:
-        # Log the error with a descriptive message
-        print(f"Error creating 'pwned' table: {e}")
-        raise  # Re-raise the exception if you want the caller to handle it
-
-    finally:
-        # Ensure the connection is closed even if an error occurs
-        if conn:
-            conn.close()
-
 
 def populate_pwned_data():
     new_networks = 0  # Counter for new networks with geolocation

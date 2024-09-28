@@ -3,12 +3,8 @@ import sqlite3
 import csv
 import datetime
 import sys
+from app.tools.db import get_db_connection, format_bssid
 
-# Function to get a database connection
-def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 # Function to create the "wpasec" table if it doesn't exist
 def create_wpasec_table():
@@ -42,8 +38,8 @@ def parse_csv(csv_content):
             ap_mac, sta_mac, ssid, password = row
 
             # Format MAC from abcdefhgij to ab:cd:ef:gh:ij
-            ap_mac = ':'.join(ap_mac[i:i + 2].upper() for i in range(0, len(ap_mac), 2))
-            sta_mac = ':'.join(sta_mac[i:i + 2].upper() for i in range(0, len(sta_mac), 2))
+            ap_mac = format_bssid(ap_mac)
+            sta_mac = format_bssid(sta_mac)
 
             timestamp = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
