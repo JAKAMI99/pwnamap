@@ -66,7 +66,6 @@ fetch('/api/pwnamap')
         <strong>Password:</strong> ${poi.password}<br>
         <strong>Accuracy:</strong> ${poi.accuracy} meters<br>
         <button onclick="window.open('${geoSchemeURL}', '_blank')">Navigate to</button><button onclick="generateQrCode('${poi.wifiUri}')">Show QR</button><br>
-        
       `;
 
       marker.addTo(map).bindPopup(popupContent);
@@ -79,6 +78,46 @@ fetch('/api/pwnamap')
       marker.on("popupclose", function() {
         map.removeLayer(circle); // Remove circle when the popup is closed
       });
+
+      let hoverTimeout;
+      let closeTimeout;
+      let hoverPopup;  // Keep a reference to the popup
+      
+      // Show a quote or message when the mouse hovers over the marker
+      marker.on('mouseover', function() {
+        clearTimeout(closeTimeout);
+      
+        hoverTimeout = setTimeout(function() {
+          var hoverMessage = `“${poi.name}”`;
+      
+          // Define the popup's offset (move it 20px above the marker)
+          var popupOffset = [0, -20];  // [horizontal offset, vertical offset]
+      
+          // Show the message as a popup, with 'closeButton' and 'closeOnClick' options disabled
+          hoverPopup = L.popup({ 
+            className: 'hover-popup', 
+            closeButton: false,  // Disable the close button
+            closeOnClick: false, // Disable closing on map click
+            offset: popupOffset   // Apply the offset to position the popup above the marker
+          })
+            .setLatLng([poi.latitude, poi.longitude])
+            .setContent(hoverMessage)
+            .openOn(map);
+        }, 100); // Delay before showing the popup
+      });
+      
+      // Remove the hover quote when the mouse leaves the marker
+      marker.on('mouseout', function() {
+        clearTimeout(hoverTimeout);
+      
+        closeTimeout = setTimeout(function() {
+          if (hoverPopup) {
+            hoverPopup.close(); // Close the popup
+            hoverPopup = null;
+          }
+        }, 500); // Delay before closing the popup
+      });
+
     });
   })
   .catch((error) => console.error("Error fetching data:", error));
