@@ -81,6 +81,14 @@ function searchAndRefreshMap() {
     .catch(error => console.error('Error fetching data:', error));
 }
 
+function clearForm() {
+    document.getElementById('networkType').value = "WIFI";
+    document.getElementById('encryption').value = "";
+    document.getElementById('searchInputName').value ="";
+    document.getElementById('searchInputNetworkId').value = "";
+    document.getElementById('excludeNoSSID').checked = true; 
+}
+
 // Call searchAndRefreshMap function initially to load data
 
 // Add event listeners for Enter key in search fields
@@ -100,5 +108,10 @@ document.getElementById('searchInputNetworkId').addEventListener('keypress', fun
 // Add event listener to search button
 document.getElementById('searchButton').addEventListener('click', function() {
     searchAndRefreshMap();
+});
+
+//Clear Form to pageload-default
+document.getElementById('clearButton').addEventListener('click', function() {
+    clearForm();
 });
 
