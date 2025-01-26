@@ -43,13 +43,13 @@ That's why I recommend running the war driving app from [Wigle](https://wigle.ne
 ### Dockerhub  (recommended) 
 ```
 docker pull jakami/pwnamap:latest
-docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/app/data/ pwnamap:latest
+docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/app/data/ jakami/pwnamap:latest
 ```
 ### Manual Docker Build
 ```
 git clone https://github.com/JAKAMI99/pwnamap.git
-docker build -t pwnamap:latest .
-docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/app/data/ pwnamap:latest
+docker build -t jakami/pwnamap:latest .
+docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/app/data/ jakami/pwnamap:latest
 ```
 ### Docker-Compose
 ```
