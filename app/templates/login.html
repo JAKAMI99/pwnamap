@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-</head>
-<body>
-    <div class="header">
-        <a href="/">
-            <div class="logo">
-                <img src="static/images/logo.jpg" alt="Logo">
-            </div>
-        </a>
-        <div class="title">pwnamap</div>
-    </div>
-    <h2>Login</h2>
+{% extends 'base.html' %}
+{% block title %}pwnamap — Login{% endblock %}
+{% block content %}
+  <div style="max-width: 420px; margin: var(--space-8) auto;">
+    <h1 style="text-align: center;">Sign in</h1>
+    <p style="text-align: center; color: var(--text-dim); margin-bottom: var(--space-5);">pwnamap — self-hosted companion for your pwnagotchi</p>
+
     {% if error %}
-    <p style="color: red;">{{ error }}</p>
+      <div class="card" style="border-left: 4px solid var(--danger); margin-bottom: var(--space-4);">
+        <strong style="color: var(--danger);">Sign-in failed</strong>
+        <div style="color: var(--text-dim); margin-top: var(--space-1);">{{ error }}</div>
+      </div>
     {% endif %}
-    <form action="/login" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-        <input type="submit" value="Login">
+
+    <form id="login-form" method="post" action="/login" class="card">
+      <div class="form-field">
+        <label class="form-label" for="username">Username</label>
+        <input id="username" name="username" type="text" class="form-input" autocomplete="username" required autofocus>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="password">Password</label>
+        <input id="password" name="password" type="password" class="form-input" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block">Sign in</button>
     </form>
-</body>
-</html>
+  </div>
+{% endblock %}
+{% block scripts %}{{ bundle('login') | safe }}{% endblock %}

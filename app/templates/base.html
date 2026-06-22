@@ -1,0 +1,50 @@
+{# vibecoded: shared layout #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#121212">
+  <meta name="description" content="pwnamap — self-hosted companion for your pwnagotchi">
+  <title>{% block title %}pwnamap{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
+  {% block head_extra %}{% endblock %}
+</head>
+<body data-page="{% block page_id %}default{% endblock %}">
+  <header class="app-header">
+    <div class="app-header__inner">
+      <a class="app-header__brand" href="/">
+        <img class="app-header__logo" src="{{ url_for('static', filename='images/logo.jpg') }}" alt="pwnamap logo">
+        <span class="app-header__title">pwnamap</span>
+      </a>
+      <button class="app-header__nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <nav class="app-nav" aria-label="Primary">
+        {% set nav_items = [
+          ('dashboard',  '/',          'Home'),
+          ('pwnamap',    '/pwnamap',   'Map'),
+          ('explore',    '/explore',   'Explore'),
+          ('handshakes', '/handshakes','Handshakes'),
+          ('stats',      '/stats',     'Stats'),
+          ('tools',      '/tools',     'Tools'),
+          ('settings',   '/settings',  'Settings'),
+        ] %}
+        {% for page_id, href, label in nav_items %}
+          <a class="app-nav__link" data-page="{{ page_id }}" href="{{ href }}"><span>{{ label }}</span></a>
+        {% endfor %}
+        <a class="app-nav__link" data-page="logout" href="/logout"><span>Logout</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

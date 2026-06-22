@@ -29,6 +29,15 @@ def create_app(config_overrides: dict | None = None) -> Flask:
 
     configure_logging(app.config["LOG_LEVEL"])
 
+    # vibecoded: register Jinja filters for frontend bundle injection
+    from app.templating import register_filters, frontend_ready
+    register_filters(app)
+    if not frontend_ready():
+        logging.warning(
+            "Frontend not built — templates will inject placeholder comments. "
+            "Run `npm --prefix frontend run build` (or use the Docker build)."
+        )
+
     # vibecoded: blueprints would be registered here.
     # Keeping the original import structure intact — if `app.routes` exposed
     # blueprints or module-level `init_app(app)` functions, those still work.

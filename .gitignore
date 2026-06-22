@@ -1,49 +1,33 @@
-# vibecoded: expanded from 27-byte version
-# Original was minimal; vibecoded adds common Python + secrets exclusions.
+# vibecoded: keep Docker build context small and reproducible.
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-htmlcov/
+# Don't ship the frontend node_modules into the build context
+frontend/node_modules
+frontend/dist
+dist
+.git
+.github
+.gitignore
+.gitattributes
+
+# Don't ship Python artifacts
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
 .coverage
-.coverage.*
+htmlcov
 
-# Virtual envs
-.venv/
-venv/
-env/
-
-# Secrets & local config — never commit
-.env
-.env.local
-*.pem
-*.key
-api_keys.txt
-
-# Editor / OS
-.vscode/
-.idea/
-*.swp
-.DS_Store
-Thumbs.db
-
-# App-specific runtime
+# Don't ship local data
 app/data/
 *.db
 *.sqlite
-*.sqlite3
-instance/
+.env
 
-# Build artifacts
-dist/
-build/
-*.whl
+# Don't ship IDE files
+.vscode
+.idea
+*.swp
 
 # vibecoded: never ignore Dockerfile, requirements*.txt, run.py

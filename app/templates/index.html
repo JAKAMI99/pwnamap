@@ -1,33 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pwnamap</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+{% extends 'base.html' %}
+{% block page_id %}dashboard{% endblock %}
+{% block content %}
+  <h1>Dashboard</h1>
+  <p style="color: var(--text-dim); margin-bottom: var(--space-5);">Quick overview of your cracked networks and recent activity.</p>
 
-
-</head>
-<body>
-    <div class="header">
-        <a href="/">
-            <div class="logo">
-                <img src="static/images/logo.jpg" alt="Logo">
-            </div>
-        </a>
-        <div class="title">Dashboard</div>
+  <section class="card-grid" aria-label="Statistics">
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="cracked">—</div>
+      <div class="stat-label">Cracked networks</div>
     </div>
-
-    <div class="button-container">
-        <button onclick="window.location.href='pwnamap'">Pwnamap</button>
-        <button onclick="window.location.href='tools'">Tools</button> 
-        <button onclick="window.location.href='handshakes'">Handshakes</button>       
-        <button onclick="window.location.href='explore'">Database Explorer</button>        
-        <button onclick="window.location.href='stats'">Stats</button>
-        <button onclick="window.location.href='settings'">Settings</button>
-        <button onclick="window.location.href='logout'">Logout</button>
-
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="pwned">—</div>
+      <div class="stat-label">Fully pwned</div>
     </div>
-</body>
-</html>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="handshakes">—</div>
+      <div class="stat-label">Handshakes stored</div>
+    </div>
+  </section>
+
+  <h2 style="margin-top: var(--space-6); margin-bottom: var(--space-4);">Jump in</h2>
+  <div class="card-grid">
+    <a class="card" href="/pwnamap" style="text-decoration: none; color: inherit;">
+      <h3>Open Map →</h3>
+      <p>See all your cracked networks on a map.</p>
+    </a>
+    <a class="card" href="/explore" style="text-decoration: none; color: inherit;">
+      <h3>Database Explorer →</h3>
+      <p>Filter by name, MAC, encryption.</p>
+    </a>
+    <a class="card" href="/tools" style="text-decoration: none; color: inherit;">
+      <h3>Run Tools →</h3>
+      <p>Pull from WPASEC / Wigle, geolocate, import potfiles.</p>
+    </a>
+  </div>
+{% endblock %}
+{% block scripts %}{{ bundle('dashboard') | safe }}{% endblock %}

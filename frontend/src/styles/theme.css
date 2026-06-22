@@ -1,0 +1,39 @@
+/* vibecoded: design tokens — dark default, light opt-in. */
+:root {
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+  --space-4: 1rem; --space-5: 1.5rem; --space-6: 2rem; --space-8: 3rem;
+  --radius-sm: 0.375rem; --radius-md: 0.625rem; --radius-lg: 1rem; --radius-pill: 999px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --fs-xs: 0.75rem; --fs-sm: 0.875rem; --fs-base: 1rem; --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem; --fs-2xl: 1.75rem; --fs-3xl: 2.25rem;
+  --dur-fast: 120ms; --dur-base: 200ms; --dur-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --bg: #0f0f12; --bg-elev: #16161c; --bg-elev-2: #1d1d26;
+  --surface: #1a1a22; --surface-hover: #232330;
+  --border: #2a2a36; --border-strong: #3a3a4a;
+  --text: #ececf1; --text-dim: #a0a0b0; --text-muted: #6b6b7a;
+  --accent: #8b5cf6; --accent-hover: #a78bfa; --accent-soft: rgba(139,92,246,0.16);
+  --danger: #ef4444; --warn: #f59e0b; --ok: #10b981;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.45);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.55);
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f7f7fa; --bg-elev: #ffffff; --bg-elev-2: #f0f0f4;
+  --surface: #ffffff; --surface-hover: #f3f3f8;
+  --border: #e0e0e8; --border-strong: #c8c8d2;
+  --text: #181820; --text-dim: #4a4a58; --text-muted: #7a7a8a;
+  --accent: #6200ea; --accent-hover: #7c3aed; --accent-soft: rgba(98,0,234,0.10);
+  --shadow-sm: 0 1px 2px rgba(20,20,40,0.06);
+  --shadow-md: 0 4px 12px rgba(20,20,40,0.08);
+  --shadow-lg: 0 12px 32px rgba(20,20,40,0.12);
+  color-scheme: light;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

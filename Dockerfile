@@ -1,4 +1,20 @@
-# vibecoded: modernisiert — Python 3.9 → 3.12, non-root, gunicorn
+# vibecoded: multi-stage build — Node builds the frontend bundle, Python serves it.
+# Runtime image contains zero Node, zero npm — only the prebuilt static assets.
+
+# ============ Stage 1: Frontend bundle ============
+FROM node:22-alpine AS frontend-builder
+
+WORKDIR /build/frontend
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm ci --no-audit --no-fund 2>/dev/null \
+    || npm install --no-audit --no-fund
+
+COPY frontend/vite.config.js ./
+COPY frontend/src ./src
+
+RUN npm run build
+
+# ============ Stage 2: Python runtime ============
 FROM python:3.12-alpine
 
 ENV APP_VERSION="0.9.0" \
@@ -7,7 +23,6 @@ ENV APP_VERSION="0.9.0" \
     LOG_LEVEL=INFO \
     PORT=1337
 
-# Build deps for bcrypt + runtime deps for healthcheck + tini for signal handling
 RUN apk add --no-cache \
         build-base \
         curl \
@@ -19,8 +34,12 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app source
-COPY . .
+# Copy Python app source
+COPY app/ ./app/
+COPY run.py ./
+
+# vibecoded: copy prebuilt frontend bundle (Vite wrote to /build/dist/)
+COPY --from=frontend-builder /build/dist /app/static/dist
 
 # vibecoded: run as non-root for defense in depth
 RUN addgroup -S app && adduser -S app -G app \

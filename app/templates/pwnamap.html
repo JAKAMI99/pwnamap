@@ -1,53 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pwnamap</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Leaflet.Locate CSS from jsDelivr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-    <!-- Favicon and Custom Stylesheet -->
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/map.css') }}">
-    <style>
-        /* Media query for smaller screens */
-            @media (max-width: 600px) {
-                .controls {
-                    flex-direction: column; /* Stack vertically */
-                    justify-content: flex-start; /* Align at the start */
-                    gap: 5px; /* Smaller gap for mobile */
-                    padding: 10px; /* Reduce padding for mobile */
-                    width: 100%; /* Full width */
-                }
-            
-                #map {
-                    top: 100px; /* Adjusted offset for mobile */
-                }
-            }
+{% extends 'base.html' %}
+{% block title %}pwnamap — Map{% endblock %}
+{% block page_id %}pwnamap{% endblock %}
+{% block content %}
+  <div class="stack" style="margin-bottom: var(--space-4);">
+    <h1>Your network map</h1>
+    <p style="color: var(--text-dim); margin: 0;">All your captured and cracked networks.</p>
+  </div>
 
-        </style>
-</head>
-<body>
-    <div class="header">
-        <a href="/">
-            <div class="logo">
-                <img src="static/images/logo.jpg" alt="Logo">
-            </div>
-        </a>
-        <div class="title">pwnamap</div>
-    </div>
+  <div id="map" class="map-container" role="application" aria-label="Network map"></div>
 
-    <!-- Map Container -->
-    <div id="map"></div>
-
-    <!-- Leaflet JavaScript -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- Leaflet.Locate JavaScript from jsDelivr -->
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-    <!-- Your Custom JavaScript -->
-    <script src="{{ url_for('static', filename='js/pwnamap.js') }}"></script>
-</body>
-</html>
+  <aside style="margin-top: var(--space-4);" aria-label="API QR">
+    <h3>Share API with your pwnagotchi</h3>
+    <p style="color: var(--text-dim);">Scan this QR code on the device that runs pwnamap-plugin to upload handshakes.</p>
+    <canvas id="api-qr" width="220" height="220"
+      style="background: var(--bg-elev); border-radius: var(--radius-md); padding: var(--space-3); border: 1px solid var(--border);"></canvas>
+  </aside>
+{% endblock %}
+{% block scripts %}{{ bundle('pwnamap') | safe }}{% endblock %}
