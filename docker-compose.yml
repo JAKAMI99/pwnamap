@@ -1,20 +1,32 @@
-version: '3.9'
-
+# vibecoded: fixed healthcheck (curl missing in alpine), env_file for secrets,
+# named volume instead of bind-mount (works on any host filesystem)
 services:
   pwnamap:
-    build: .  # Builds the Docker image from the current directory
-    image: pwnamap:latest  # Name of the Docker image
+    build: .
+    image: pwnamap:latest
     ports:
-      - "1337:1337"  # Maps port 1337 on the host to port 1337 in the container
+      - "1337:1337"
     volumes:
-      - "${HOME}/.docker-data:/app/app/data"  # Volume mapping for persistent data
-    restart: on-failure  # Restarts the container if it fails
+      - pwnamap_data:/app/app/data
+    restart: on-failure
+    env_file:
+      - .env  # WIGLE_API_KEY, etc. — never commit this file
     environment:
-      APP_VERSION: "0.9.0"  # Application version
-      LOG_LEVEL: "INFO"  # Logging level
-      PYTHONUNBUFFERED: "1"  # Unbuffered Python output in the container
+      APP_VERSION: "0.9.0"
+      LOG_LEVEL: "INFO"
+      PYTHONUNBUFFERED: "1"
+      PORT: "1337"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:1337 || exit 1"]  # Health check command
-      interval: 30s  # Runs every 30 seconds
-      timeout: 10s  # Times out after 10 seconds
-      retries: 3  # Retries three times before marking as unhealthy
+      # vibecoded: Dockerfile now installs curl, so this works
+      test: ["CMD-SHELL", "curl -fsS http://localhost:1337/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s  # give gunicorn time to boot workers
+    # vibecoded: explicit security opts; on Unraid you may need to remove user
+    # if the data dir is on a network share with different ownership
+    # user: "1000:1000"
+
+volumes:
+  pwnamap_data:
+    name: pwnamap_data

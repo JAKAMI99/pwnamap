@@ -1,3 +1,49 @@
+# vibecoded: expanded from 27-byte version
+# Original was minimal; vibecoded adds common Python + secrets exclusions.
+
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Secrets & local config — never commit
+.env
+.env.local
+*.pem
+*.key
+api_keys.txt
+
+# Editor / OS
 .vscode/
-data/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# App-specific runtime
+app/data/
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# Build artifacts
+dist/
+build/
+*.whl
+
+# vibecoded: never ignore Dockerfile, requirements*.txt, run.py
