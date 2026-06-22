@@ -30,4 +30,7 @@ app/data/
 .idea
 *.swp
 
+# Local dev venv (created by dev.py)
+.venv/
+
 # vibecoded: never ignore Dockerfile, requirements*.txt, run.py
