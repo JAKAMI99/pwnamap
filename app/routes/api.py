@@ -1,5 +1,10 @@
 from flask import jsonify, request, Response, stream_with_context, Blueprint, session, send_file
-import sqlite3, os, subprocess, re, logging
+import logging
+import os
+import re
+import subprocess
+
+from app.db import get_db
 from werkzeug.utils import secure_filename
 from .auth import verify_api_key, login_required, api_key_or_login_required
 
@@ -13,8 +18,7 @@ ALLOWED_EXTENSIONS = {'pot', '22000', 'potfile'}
 
 
 def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
+    conn = get_db()
     return conn
 
 

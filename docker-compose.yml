@@ -1,5 +1,15 @@
-# vibecoded: fixed healthcheck (curl missing in alpine), env_file for secrets,
-# named volume instead of bind-mount (works on any host filesystem)
+# vibecoded: fixed healthcheck, env_file for secrets, BACKWARD-COMPATIBLE data volume.
+#
+# DB migration: the old compose used a bind-mount on `${HOME}/.docker-data`.
+# This new version uses a NAMED VOLUME (pwnamap_data) which Docker manages
+# automatically. If you're upgrading from a pre-vibecoded install, your old
+# DB lives at `${HOME}/.docker-data/pwnamap.db`. Run `./migrate-data.sh`
+# ONCE to copy it into the new volume before starting pwnamap.
+#
+# If you prefer to keep using your existing bind-mount path, change the
+# `volumes:` entry below to:
+#   - "${HOME}/.docker-data:/app/app/data"
+
 services:
   pwnamap:
     build: .
@@ -10,12 +20,14 @@ services:
       - pwnamap_data:/app/app/data
     restart: on-failure
     env_file:
-      - .env  # WIGLE_API_KEY, etc. — never commit this file
+      - .env  # WIGLE_API_KEY, etc. -- never commit this file
     environment:
       APP_VERSION: "0.9.0"
       LOG_LEVEL: "INFO"
       PYTHONUNBUFFERED: "1"
       PORT: "1337"
+      # vibecoded: DATA_DIR must match the volume mount target.
+      DATA_DIR: "/app/app/data"
     healthcheck:
       # vibecoded: Dockerfile now installs curl, so this works
       test: ["CMD-SHELL", "curl -fsS http://localhost:1337/ || exit 1"]

@@ -38,6 +38,17 @@ def create_app(config_overrides: dict | None = None) -> Flask:
             "Run `npm --prefix frontend run build` (or use the Docker build)."
         )
 
+    # vibecoded: fail fast if the data directory is not writable.
+    # Catches misconfigured volume mounts at startup, not on first request.
+    from app.db import check_writable
+    try:
+        check_writable()
+        logging.info("DB data directory OK at %s", os.environ.get("DATA_DIR", "app/data"))
+    except PermissionError as exc:
+        logging.error("DB data directory not writable: %s", exc)
+        # Don't raise — let the app start so the user can see the error in the dashboard.
+        # Production users with read-only filesystems may want to flip this.
+
     # vibecoded: blueprints would be registered here.
     # Keeping the original import structure intact — if `app.routes` exposed
     # blueprints or module-level `init_app(app)` functions, those still work.

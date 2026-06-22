@@ -1,5 +1,9 @@
+import sqlite3
 from flask import render_template, request, Blueprint, redirect, session, url_for, send_from_directory
-import sqlite3, os, logging
+import logging
+import os
+
+from app.db import get_db
 from datetime import datetime
 from .auth import login_required, authenticate_user
 from os.path import join, getctime
@@ -10,8 +14,7 @@ log = logging.getLogger(__name__)
 dynamic_bp = Blueprint('dynamic', __name__)
 
 def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
+    conn = get_db()
     return conn
 
 
