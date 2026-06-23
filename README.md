@@ -49,7 +49,7 @@ docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/app/data/ jakami/pwnamap:l
 ```
 git clone https://github.com/JAKAMI99/pwnamap.git
 docker build -t jakami/pwnamap:latest .
-docker run -d -p 1337:1337 -v $HOME/.docker-data:/app/app/data/ jakami/pwnamap:latest
+docker run -d -p 1337:1337 -v $HOME/.docker-data/pwnamap:/app/app/data/ jakami/pwnamap:latest
 ```
 ### Docker-Compose
 ```
