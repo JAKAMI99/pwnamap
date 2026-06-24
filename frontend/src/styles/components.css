@@ -96,3 +96,16 @@
 .live-log { background: #000; color: #d0d0d0; font-family: var(--font-mono); font-size: var(--fs-sm); padding: var(--space-3); border-radius: var(--radius-md); height: 320px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
 .live-log__line { padding: var(--space-1) 0; border-bottom: 1px solid #222; }
 .live-log__line:last-child { border-bottom: 0; }
+
+/* vibecoded: small button + preset group for date filters */
+.btn--sm { padding: var(--space-1) var(--space-3); min-height: 1.75rem; font-size: var(--fs-sm); }
+.filter-bar__presets { display: flex; gap: var(--space-1); flex-wrap: wrap; }
+.filter-bar__presets .btn--sm[aria-pressed="true"],
+.filter-bar__presets .btn--sm.is-active { background: var(--accent); color: white; border-color: var(--accent); }
+.filter-bar__date input[type="date"] {
+  font-family: inherit; color-scheme: dark;
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+  color: var(--text); font-size: var(--fs-sm); min-height: 2.5rem; width: 100%;
+}
+.filter-bar__date input[type="date"]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }

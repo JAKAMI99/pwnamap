@@ -40,6 +40,27 @@
       <input id="searchInputNetworkId" name="network_id" type="search" class="form-input" placeholder="e.g. f8:e0:79:af:57:eb">
     </div>
 
+    {# vibecoded: date-range filter #}
+    <div class="form-field filter-bar__date" style="margin: 0;">
+      <label class="form-label" for="dateFrom">From</label>
+      <input id="dateFrom" name="date_from" type="date" class="form-input">
+    </div>
+
+    <div class="form-field filter-bar__date" style="margin: 0;">
+      <label class="form-label" for="dateTo">To</label>
+      <input id="dateTo" name="date_to" type="date" class="form-input">
+    </div>
+
+    <div class="form-field" style="margin: 0;">
+      <label class="form-label">Quick range</label>
+      <div class="filter-bar__presets" role="group" aria-label="Date presets">
+        <button type="button" class="btn btn--ghost btn--sm" data-preset="all">All</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-preset="24h">24h</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-preset="7d">7d</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-preset="30d">30d</button>
+      </div>
+    </div>
+
     <div class="form-field" style="margin: 0; display: flex; align-items: end; gap: var(--space-2);">
       <label style="display: flex; gap: var(--space-2); align-items: center; cursor: pointer;">
         <input id="excludeNoSSID" type="checkbox" checked>
