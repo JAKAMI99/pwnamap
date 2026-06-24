@@ -1,5 +1,10 @@
 from flask import Blueprint, session, redirect, url_for, request, jsonify
-import sqlite3, bcrypt, os, re, logging
+import bcrypt
+import logging
+import os
+import re
+
+from app.db import get_db
 from functools import wraps
 from contextlib import closing
 
@@ -7,18 +12,8 @@ auth_bp = Blueprint('auth', __name__)
 log = logging.getLogger(__name__)
 
 def get_db_connection():
-    db_path = 'app/data/'
-
-    # Check for write permissions on the database directory
-    check_permissions(db_path)  # Ensure the path is writable
-
-    if not os.path.exists(db_path):
-        os.makedirs(db_path, exist_ok=True)  # Create the directory if it doesn't exist
-        log.info(f"Database was not present and was created at {db_path}")
-
-    conn = sqlite3.connect(os.path.join(db_path, 'pwnamap.db'))
-    conn.row_factory = sqlite3.Row
-    return conn
+    # vibecoded: backward-compat shim. New code should call `app.db.get_db()`.
+    return get_db()
 
 def check_permissions(db_path):
     if not os.access(db_path, os.W_OK):

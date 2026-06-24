@@ -1,75 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <style>
-        .clear-button {
-            margin-top: 10px; 
-            padding: 5px 10px; 
-            font-size: 14px; 
-            width: auto; 
-        }
-        
-        .result-container {
-            width: 80%;
-            height: 300px; 
-            background-color: black;
-            overflow-y: scroll; /* Enable scrolling */
-            border: 1px solid white;
-            padding: 10px;
-            margin-top: 20px; 
-        }
-        .result-text {
-            color: white;
-            font-family: monospace; 
-            white-space: pre-wrap;
-        }
-        
-        .result-text div {
-            margin-bottom: 5px; /* Add margin between log messages */
-        }
-    </style>
-</head>
+{% extends 'base.html' %}
+{% block title %}pwnamap — Tools{% endblock %}
+{% block page_id %}tools{% endblock %}
+{% block content %}
+  <h1>Tools</h1>
+  <p style="color: var(--text-dim); margin-bottom: var(--space-4);">One-click jobs against your local database and external services.</p>
 
-<body>
-    <div class="header">
-        <a href="/">
-            <div class="logo">
-                <img src="static/images/logo.jpg" alt="Logo">
-            </div>
-        </a>
-        <div class="title">Tools</div>
+  <div class="card-grid" style="margin-bottom: var(--space-4);">
+    <div class="card">
+      <h3 style="margin-top: 0;">Get WPASEC</h3>
+      <p style="color: var(--text-dim); font-size: var(--fs-sm);">Download your cracked potfile from wpa-sec.stanev.org.</p>
+      <button class="btn btn--primary" onclick="runScript('wpasec')">Run</button>
     </div>
 
-    <div class="button-container">
-        <button id="wpasec_button" onclick="runScript('wpasec')">Get WPASEC</button>
-        <div id="wpasec_result" class="result"></div>
-
-        <button id="wigle_button" onclick="runScript('wigle_export')">Get your WIGLE Uploads</button>
-        <div id="wigle_result" class="result"></div>
-
-        <button id="geolocate_local_button" onclick="runScript('geolocate_local')">Geolocate with local DB</button>
-        <div id="geolocate_local_result" class="result"></div>
-        
-        <button id="geolocate_wigle_button" onclick="runScript('geolocate_wigle')">Geolocate with wigle (API Limit)</button>
-        <div id="geolocate_wigle_result" class="result"></div> 
-
-        <button id="manual_pot_button" title="Click to upload a potfile (Allowed extensions are '.22000','.pot', '.potfile')" onclick="document.getElementById('file_input').click();">Upload and import manual potfile</button>
-        <input type="file" id="file_input" style="display: none;" onchange="uploadFile(event)">
-        <div id="manual_pot_result" class="result"></div> 
+    <div class="card">
+      <h3 style="margin-top: 0;">Get Wigle uploads</h3>
+      <p style="color: var(--text-dim); font-size: var(--fs-sm);">Import networks you wardrove with Wigle.</p>
+      <button class="btn btn--primary" onclick="runScript('wigle_export')">Run</button>
     </div>
 
-    <div class="result-container">
-        <div id="live-results" class="result-text"></div>
+    <div class="card">
+      <h3 style="margin-top: 0;">Geolocate (local DB)</h3>
+      <p style="color: var(--text-dim); font-size: var(--fs-sm);">Match handshakes to known coordinates using your own DB.</p>
+      <button class="btn btn--primary" onclick="runScript('geolocate_local')">Run</button>
     </div>
-    
-    <button class="clear-button" onclick="clearOutput()">Clear Output</button>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
-</body>
-</html>
+    <div class="card">
+      <h3 style="margin-top: 0;">Geolocate (Wigle API)</h3>
+      <p style="color: var(--text-dim); font-size: var(--fs-sm);">Fallback via Wigle. Subject to API rate limits.</p>
+      <button class="btn btn--ghost" onclick="runScript('geolocate_wigle')">Run</button>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top: 0;">Upload potfile</h3>
+      <p style="color: var(--text-dim); font-size: var(--fs-sm);"><code>.22000</code>, <code>.pot</code>, or <code>.potfile</code>.</p>
+      <input type="file" id="file_input" accept=".22000,.pot,.potfile" style="display: none;" onchange="uploadFile(event)">
+      <button class="btn btn--ghost" onclick="document.getElementById('file_input').click();">Choose file…</button>
+    </div>
+  </div>
+
+  <h2 class="section-title">Live output</h2>
+  <div id="live-results" class="live-log" aria-live="polite"></div>
+  <div style="margin-top: var(--space-3);">
+    <button class="btn btn--ghost" onclick="clearOutput()">Clear output</button>
+  </div>
+{% endblock %}
+{% block scripts %}{{ bundle('tools') | safe }}{% endblock %}

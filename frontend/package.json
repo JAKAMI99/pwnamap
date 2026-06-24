@@ -1,0 +1,22 @@
+{
+  "name": "pwnamap-frontend",
+  "version": "0.9.0",
+  "private": true,
+  "type": "module",
+  "description": "Frontend bundle for pwnamap — built once, ships self-contained, no runtime CDN",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "leaflet": "1.9.4",
+    "leaflet.markercluster": "1.5.3",
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "vite": "5.4.10",
+    "vite-plugin-pwa": "0.20.5",
+    "vite-plugin-static-copy": "1.0.6"
+  }
+}

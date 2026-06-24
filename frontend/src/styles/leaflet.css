@@ -1,0 +1,12 @@
+/* vibecoded: Leaflet theme overrides */
+.map-container { position: relative; height: calc(100vh - 12rem); min-height: 400px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+@media (max-width: 767px) { .map-container { height: calc(100vh - 16rem); min-height: 320px; } }
+.leaflet-container { background: var(--bg-elev-2); font-family: var(--font-sans); }
+.leaflet-control-attribution { background: var(--bg-elev) !important; color: var(--text-dim) !important; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.leaflet-control-attribution a { color: var(--accent) !important; }
+.leaflet-bar a, .leaflet-bar a:hover { background-color: var(--bg-elev); color: var(--text); border-bottom-color: var(--border); }
+.marker-cluster { background: var(--accent-soft) !important; }
+.marker-cluster div { background: var(--accent) !important; color: white !important; font-weight: 600; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--bg-elev); color: var(--text); box-shadow: var(--shadow-md); }
+.leaflet-popup-content { margin: var(--space-3) var(--space-4); }
+.leaflet-control-locate a { background-color: var(--bg-elev); color: var(--text); }

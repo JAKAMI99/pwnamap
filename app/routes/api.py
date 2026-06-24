@@ -1,10 +1,60 @@
+import sqlite3
+from datetime import date
 from flask import jsonify, request, Response, stream_with_context, Blueprint, session, send_file
-import sqlite3, os, subprocess, re, logging
+import logging
+import os
+import re
+import subprocess
+
+from app.db import get_db
 from werkzeug.utils import secure_filename
 from .auth import verify_api_key, login_required, api_key_or_login_required
 
 api_bp = Blueprint('api', __name__)
 log = logging.getLogger(__name__)
+
+
+# vibecoded: normalize the wigle `time` column to a comparable string.
+# wigle.time is TEXT, but the importer format varies (ISO-8601,
+# "YYYY-MM-DD HH:MM:SS", epoch-as-string, ...). We compare by prefix
+# substr on the first 10/19 chars which matches ISO-prefixed formats
+# and gracefully skips non-matching rows (NULL fail-safe).
+def _time_filter_clause(column: str, date_from: str | None, date_to: str | None) -> tuple[str, list]:
+    """Build a SQL fragment + params for inclusive date-range filtering
+    on a TEXT timestamp column.
+
+    date_from / date_to are ISO 'YYYY-MM-DD' (from <input type="date">).
+    Empty / None means 'no bound on that side'. date_to is extended to
+    end-of-day (T23:59:59) so a single-day selection includes that day.
+    """
+    if not date_from and not date_to:
+        return "", []
+
+    def _iso(d: str | None, end_of_day: bool) -> str | None:
+        if not d:
+            return None
+        try:
+            dt = date.fromisoformat(d)
+        except ValueError:
+            log.warning("Ignoring malformed date filter: %r", d)
+            return None
+        return dt.strftime("%Y-%m-%d") + ("T23:59:59" if end_of_day else "T00:00:00")
+
+    iso_from = _iso(date_from, end_of_day=False)
+    iso_to = _iso(date_to, end_of_day=True)
+
+    parts = []
+    params: list = []
+    if iso_from:
+        parts.append(f"substr({column}, 1, {len(iso_from)}) >= ?")
+        params.append(iso_from)
+    if iso_to:
+        parts.append(f"substr({column}, 1, {len(iso_to)}) <= ?")
+        params.append(iso_to)
+
+    if not parts:
+        return "", []
+    return " AND (" + " AND ".join(parts) + ")", params
 
 
 POT_UPLOAD_FOLDER = 'app/data/potfile'
@@ -13,8 +63,7 @@ ALLOWED_EXTENSIONS = {'pot', '22000', 'potfile'}
 
 
 def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
-    conn.row_factory = sqlite3.Row
+    conn = get_db()
     return conn
 
 
@@ -106,31 +155,60 @@ def get_street_overlay():
 
 
 
+def _pwned_has_timestamp(cursor) -> bool:
+    """Return True if the live `pwned` table has a `timestamp` column.
+
+    Different importers create the table with different schemas
+    (geolocate_wigle omits timestamp, geolocate_local includes it).
+    CREATE TABLE IF NOT EXISTS keeps the first schema, so we introspect.
+    """
+    try:
+        cursor.execute("PRAGMA table_info(pwned)")
+        return any(row[1] == "timestamp" for row in cursor.fetchall())
+    except sqlite3.Error:
+        return False
+
+
 @api_bp.route('/api/pwnamap')
 @login_required
 def pwnapi():
-    # Connect to SQLite database
-    log.debug(f"Request Path: {request.path}  was called")
+    # vibecoded: optional date filter via ?date_from=YYYY-MM-DD&date_to=YYYY-MM-DD.
+    # Strategy depends on whether `pwned.timestamp` exists in this DB:
+    #   - if yes: filter directly on pwned.timestamp (cracked-via-local + wigle,
+    #     and manual pwned entries all have their own timestamp)
+    #   - if no : fall back to a LEFT JOIN on wpasec.timestamp via network_id.
+    #     pwned rows with no wpasec match are still returned but skipped from
+    #     the date range (no timestamp known -> cannot be in the user's window).
+    # This way every cracked network is at least visible; the date filter
+    # narrows rather than hides.
+    log.debug("Request Path: %s  was called", request.path)
+
+    date_from = request.args.get('date_from', '').strip() or None
+    date_to = request.args.get('date_to', '').strip() or None
 
     conn = get_db_connection()
     cursor = conn.cursor()
-    
-    # Execute SQL query to fetch POI data
-    cursor.execute('SELECT * FROM pwned')
+
+    if not (date_from or date_to):
+        cursor.execute('SELECT * FROM pwned')
+    elif _pwned_has_timestamp(cursor):
+        clause, params = _time_filter_clause('timestamp', date_from, date_to)
+        cursor.execute(f'SELECT * FROM pwned WHERE 1=1{clause}', params)
+    else:
+        # Schema without timestamp: join on wpasec.
+        clause, params = _time_filter_clause('wpasec.timestamp', date_from, date_to)
+        cursor.execute(
+            f"""SELECT pwned.* FROM pwned
+               LEFT JOIN wpasec ON wpasec.ap_mac = pwned.network_id
+               WHERE 1=1{clause}""",
+            params,
+        )
+
     rows = cursor.fetchall()
-    
-    # Get column names
     column_names = [description[0] for description in cursor.description]
-    
-    # Close database connection
     conn.close()
-    
-    # Construct list of dictionaries with column names as keys
-    pwned_data = []
-    for row in rows:
-        pwned_data.append(dict(zip(column_names, row)))
-    
-    # Return POI data as JSON
+
+    pwned_data = [dict(zip(column_names, row)) for row in rows]
     return jsonify(pwned_data)
 
 
@@ -173,6 +251,13 @@ def exploreapi():
     # If "exclude_no_ssid" is true, add condition to exclude "(no SSID)"
     if exclude_no_ssid.lower() == 'true':  # Convert to lowercase for case-insensitive comparison
         sql_query += " AND name != '(no SSID)'"
+
+    # vibecoded: optional date-range filter on wigle.time.
+    date_from = request.args.get('date_from', '').strip() or None
+    date_to = request.args.get('date_to', '').strip() or None
+    time_clause, time_params = _time_filter_clause('time', date_from, date_to)
+    sql_query += time_clause
+    parameters.extend(time_params)
 
     # Execute parameterized SQL query
     cursor.execute(sql_query, parameters)

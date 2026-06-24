@@ -1,0 +1,45 @@
+# vibecoded: replaces scattered config; ruff + mypy settings live here
+[project]
+name = "pwnamap"
+version = "0.9.0"
+description = "Self-hosted companion for pwnagotchi — map of cracked networks."
+requires-python = ">=3.12"
+license = { text = "GPL-3.0" }
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "B",   # bugbear (common pitfalls)
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "S",   # bandit (security) — review findings, don't blindly auto-fix
+]
+# S101: assert usage is OK in tests
+# S104: binding to 0.0.0.0 is intentional for Docker
+ignore = ["S101", "S104"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]  # assertions, hardcoded "passwords" etc. ok in tests
+"app/logging_config.py" = ["S"]        # logging config is exempt from bandit
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = false  # ramp up gradually
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q --strict-markers"
+markers = [
+    "smoke: smoke tests that boot the app and hit a few endpoints",
+    "slow: tests that take >1s",
+]

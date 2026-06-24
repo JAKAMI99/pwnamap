@@ -1,3 +1,4 @@
+from app.db import get_db
 from flask import render_template, request, Blueprint, redirect, session, url_for
 import logging
 import sqlite3, secrets, bcrypt, os
@@ -6,7 +7,7 @@ setup_bp = Blueprint('setup', __name__)
 log = logging.getLogger(__name__)
 
 def get_db_connection():
-    conn = sqlite3.connect('app/data/pwnamap.db')
+    conn = get_db()
     conn.row_factory = sqlite3.Row
     return conn
 

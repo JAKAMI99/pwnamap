@@ -1,117 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pwnamap</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    <style>
-        /* Define styles for the header */
-        .header {
-            color: #fff;
-            padding: 10px;
-            display: flex; /* Use flexbox for layout */
-            align-items: center; /* Align items vertically */
-            justify-content: space-between; /* Spacing between items */
-        }
+{% extends 'base.html' %}
+{% block title %}pwnamap — Handshakes{% endblock %}
+{% block page_id %}handshakes{% endblock %}
+{% block content %}
+  <h1>Handshakes</h1>
+  <p style="color: var(--text-dim); margin-bottom: var(--space-4);">Captured WPA handshakes from your pwnagotchis. Click to download.</p>
 
-        .logo img {
-            max-width: 100px;
-        }
-
-        .title {
-            font-size: 24px;
-            margin-left: 10px;
-        }
-
-        /* Updated styles for the search input */
-        .search-input {
-            width: calc(100% - 200px); /* Adjusting width to accommodate the offset */
-            padding: 10px;
-            margin-top: 150px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 20px; /* Making the search input rounded */
-            outline: none; /* Removing default focus outline */
-            transition: border-color 0.3s ease; /* Adding transition effect */
-        }
-
-        .search-input:focus {
-            border-color: #6200ea; /* Changing border color on focus */
-        }
-
-        .result-box {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 20px;
-            overflow-x: auto; /* Enable horizontal scrolling if needed */
-        }
-
-        .file-info {
-            border-bottom: 1px solid #ccc; /* Add border between each file info */
-            padding: 10px 0; /* Add padding for better spacing */
-            display: flex; /* Use flexbox for layout */
-            align-items: center; /* Align items vertically */
-        }
-
-        .file-info:last-child {
-            border-bottom: none; /* Remove border for the last file info */
-        }
-
-        .file-link {
-            color: #6200ea;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .file-link:hover {
-            color: #330099;
-        }
-
-        .timestamp {
-            color: #666; /* Changed color for timestamp */
-            margin-left: auto; /* Push timestamp to the right */
-            tab-size: 20px; /* Adjust tab size for alignment */
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="logo">
-            <a href="/">
-                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
-            </a>
-        </div>
-        <div class="title">handshakes</div>
+  <div class="filter-bar" style="grid-template-columns: 1fr;">
+    <div class="form-field" style="margin: 0;">
+      <label class="form-label" for="search">Search</label>
+      <input id="search" type="search" class="form-input" placeholder="Filter by filename...">
+      <div class="form-hint">
+        Showing <span id="result-count">{{ files_with_creation_time|length }}</span>
+        file{% if files_with_creation_time|length != 1 %}s{% endif %}
+      </div>
     </div>
+  </div>
 
-    <input class="search-input" type="text" id="search" onkeyup="filterList()" placeholder="Search files...">
-    
-    <div class="result-box" id="file-list">
-        {% for file, created in files_with_creation_time %}
-        <div class="file-info">
-            <div>
-                <span class="file-name"><a href="{{ url_for('dynamic.download_handshake', filename=file) }}" class="file-link">{{ file }}</a></span>
-                <span class="timestamp">Created: {{ created.strftime('%Y-%m-%d\t%H:%M:%S') }}</span> <!-- Using \t for tab spacing -->
-            </div>
+  <div id="file-list" class="data-list">
+    {% for file, created in files_with_creation_time %}
+      <div class="data-row" data-name="{{ file }}">
+        <div class="data-row__main">
+          <a class="data-row__name" href="{{ url_for('dynamic.download_handshake', filename=file) }}">{{ file }}</a>
+          <div class="data-row__meta">{{ created.strftime('%Y-%m-%d %H:%M:%S') }}</div>
         </div>
-        {% endfor %}
-    </div>
-    
-    <script>
-        function filterList() {
-            var input = document.getElementById("search");
-            var filter = input.value.toUpperCase();
-            var container = document.getElementById("file-list");
-            var items = container.getElementsByClassName("file-info");
-
-            for (var i = 0; i < items.length; i++) {
-                var text = items[i].getElementsByClassName("file-name")[0].innerText.toUpperCase();
-                items[i].style.display = text.indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-    </script>
-</body>
-</html>
+        <div class="data-row__actions">
+          <a class="btn btn--ghost" href="{{ url_for('dynamic.download_handshake', filename=file) }}">Download</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="card" style="text-align: center; color: var(--text-dim);">
+        No handshakes yet. Connect a pwnagotchi with the
+        <a href="https://github.com/JAKAMI99/pwnamap-plugin">pwnamap-plugin</a>.
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+{% block scripts %}{{ bundle('handshakes') | safe }}{% endblock %}

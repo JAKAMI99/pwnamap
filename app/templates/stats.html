@@ -1,87 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/menu.css">
-    <link rel="icon" href="/static/images/favicon.ico">  
-    <style>
-        h1, p, ul {
-            text-align: center;
-        }
+{% extends 'base.html' %}
+{% block title %}pwnamap — Stats{% endblock %}
+{% block page_id %}stats{% endblock %}
+{% block content %}
+  <h1>Stats</h1>
+  <p style="color: var(--text-dim); margin-bottom: var(--space-4);">What's in your database and how much you've cracked.</p>
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .label {
-            display: inline-block;
-            width: 300px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <a href="/">
-            <div class="logo">
-                <img src="static/images/logo.jpg" alt="Logo">
-            </div>
-        </a>
-        <div class="title">Stats</div>
+  <h2 class="section-title">Cracked</h2>
+  <section class="card-grid" style="margin-bottom: var(--space-6);">
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="cracked_count">{{ cracked_count }}</div>
+      <div class="stat-label">Cracked networks</div>
     </div>
-<body>
-    <div class="section">
-        <h2 class="section-title">Pwn</h2>
-        <ul>
-            <li>
-                <span class="label">Total cracked networks:</span>
-                <span class="number-box">{{ cracked_count }}</span>
-            </li>
-            <li>
-                <span class="label">Pwned networks (password+location):</span>
-                <span class="number-box">{{ pwned_count }}</span>
-            </li>
-            <li>
-                <span class="label">Total stored handshakes:</span>
-                <span class="number-box">{{ total_handshakes }}</span>
-            </li>
-        </ul>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="pwned_count">{{ pwned_count }}</div>
+      <div class="stat-label">Pwned (pw + location)</div>
     </div>
-    
-    <div class="section">
-        <h2 class="section-title">Database</h2>
-        <ul>
-            <li>
-                <span class="label">WIFI:</span>
-                <span class="number-box">{{ wifi_count }}</span>
-            </li>
-            <li>
-                <span class="label">Bluetooth:</span>
-                <span class="number-box">{{ bt_count }}</span>
-            </li>
-            <li>
-                <span class="label">BLE (Bluetooth Low Energy):</span>
-                <span class="number-box">{{ ble_count }}</span>
-            </li>
-            <li>
-                <span class="label">GSM (cell phone):</span>
-                <span class="number-box">{{ gsm_count }}</span>
-            </li>
-            <li>
-                <span class="label">LTE (cell phone):</span>
-                <span class="number-box">{{ lte_count }}</span>
-            </li>
-        </ul>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="total_handshakes">{{ total_handshakes }}</div>
+      <div class="stat-label">Handshakes</div>
     </div>
-</body>
+  </section>
 
-</html>
+  <h2 class="section-title">Database</h2>
+  <section class="card-grid">
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="wifi_count">{{ wifi_count }}</div>
+      <div class="stat-label">WIFI</div>
+    </div>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="bt_count">{{ bt_count }}</div>
+      <div class="stat-label">Bluetooth</div>
+    </div>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="ble_count">{{ ble_count }}</div>
+      <div class="stat-label">BLE</div>
+    </div>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="gsm_count">{{ gsm_count }}</div>
+      <div class="stat-label">GSM</div>
+    </div>
+    <div class="card card--stat">
+      <div class="stat-value" data-stat="lte_count">{{ lte_count }}</div>
+      <div class="stat-label">LTE</div>
+    </div>
+  </section>
+{% endblock %}
+{% block scripts %}{{ bundle('stats') | safe }}{% endblock %}

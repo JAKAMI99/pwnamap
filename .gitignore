@@ -1,3 +1,36 @@
-__pycache__/
-.vscode/
-data/
+# vibecoded: keep Docker build context small and reproducible.
+
+# Don't ship the frontend node_modules into the build context
+frontend/node_modules
+frontend/dist
+dist
+.git
+.github
+.gitignore
+.gitattributes
+
+# Don't ship Python artifacts
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+
+# Don't ship local data
+app/data/
+*.db
+*.sqlite
+.env
+
+# Don't ship IDE files
+.vscode
+.idea
+*.swp
+
+# Local dev venv (created by dev.py)
+.venv/
+
+# vibecoded: never ignore Dockerfile, requirements*.txt, run.py
