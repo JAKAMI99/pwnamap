@@ -1,9 +1,10 @@
+import sqlite3
+from datetime import date
 from flask import jsonify, request, Response, stream_with_context, Blueprint, session, send_file
 import logging
 import os
 import re
 import subprocess
-from datetime import date
 
 from app.db import get_db
 from werkzeug.utils import secure_filename
@@ -154,14 +155,32 @@ def get_street_overlay():
 
 
 
+def _pwned_has_timestamp(cursor) -> bool:
+    """Return True if the live `pwned` table has a `timestamp` column.
+
+    Different importers create the table with different schemas
+    (geolocate_wigle omits timestamp, geolocate_local includes it).
+    CREATE TABLE IF NOT EXISTS keeps the first schema, so we introspect.
+    """
+    try:
+        cursor.execute("PRAGMA table_info(pwned)")
+        return any(row[1] == "timestamp" for row in cursor.fetchall())
+    except sqlite3.Error:
+        return False
+
+
 @api_bp.route('/api/pwnamap')
 @login_required
 def pwnapi():
     # vibecoded: optional date filter via ?date_from=YYYY-MM-DD&date_to=YYYY-MM-DD.
-    # pwned has no time column, so the filter joins wpasec.timestamp via network_id
-    # (=ap_mac) when dates are present. Rows without a matching wpasec entry are
-    # dropped from the dated view -- this is intentional: a "cracked" network
-    # without a wpasec record is probably an old data import.
+    # Strategy depends on whether `pwned.timestamp` exists in this DB:
+    #   - if yes: filter directly on pwned.timestamp (cracked-via-local + wigle,
+    #     and manual pwned entries all have their own timestamp)
+    #   - if no : fall back to a LEFT JOIN on wpasec.timestamp via network_id.
+    #     pwned rows with no wpasec match are still returned but skipped from
+    #     the date range (no timestamp known -> cannot be in the user's window).
+    # This way every cracked network is at least visible; the date filter
+    # narrows rather than hides.
     log.debug("Request Path: %s  was called", request.path)
 
     date_from = request.args.get('date_from', '').strip() or None
@@ -170,17 +189,20 @@ def pwnapi():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    if date_from or date_to:
-        # Date-filtered: only cracked networks with a wpasec row in range.
+    if not (date_from or date_to):
+        cursor.execute('SELECT * FROM pwned')
+    elif _pwned_has_timestamp(cursor):
+        clause, params = _time_filter_clause('timestamp', date_from, date_to)
+        cursor.execute(f'SELECT * FROM pwned WHERE 1=1{clause}', params)
+    else:
+        # Schema without timestamp: join on wpasec.
         clause, params = _time_filter_clause('wpasec.timestamp', date_from, date_to)
         cursor.execute(
             f"""SELECT pwned.* FROM pwned
-               JOIN wpasec ON wpasec.ap_mac = pwned.network_id
+               LEFT JOIN wpasec ON wpasec.ap_mac = pwned.network_id
                WHERE 1=1{clause}""",
             params,
         )
-    else:
-        cursor.execute('SELECT * FROM pwned')
 
     rows = cursor.fetchall()
     column_names = [description[0] for description in cursor.description]
